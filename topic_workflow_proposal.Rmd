@@ -1,0 +1,16 @@
+---
+title: "topic_workflow_proposal"
+author: "Ben Thompson & Cody Coppage"
+date: "2025-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r setup, include=FALSE}
+print("This will be our topic workflow proposal for the week 5 lab")
+```
