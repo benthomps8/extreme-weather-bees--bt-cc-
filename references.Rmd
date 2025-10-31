@@ -130,7 +130,3 @@ Evaluation:
  
 Relevance:
  This shows that heat is one of the biggest factors shaping bee diversity in urban areas. It also gives support for using temperature data as a main variable in our project.
-
-```{r cars}
-summary(cars)
-```
