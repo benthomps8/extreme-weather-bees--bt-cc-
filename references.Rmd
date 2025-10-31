@@ -1,0 +1,136 @@
+---
+title: "references"
+author: "Ben Thompson & Cody Coppage"
+date: "2025-10-31"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+____________
+
+*1)	Ostwald, M. M., da Silva, C. R., & Seltmann, K. C. (2024). How does climate change impact social bees and bee sociality?. Journal of Animal Ecology, 93(11), 1610-1621*
+
+Summary: Ostwald, da Silva, and Seltmann begin by explaining how climate change may or may not impact the social level of bees. They cite other articles that mention how sociality may in turn have an unpredictable effect on the species and may expand their diversities. The studies show that increased temperatures may lead to an increase in social nesting, where bees work cooperatively to survive as opposed to their standard isolation, which may in turn actually increase the population. On the flip side, more extreme weather events like droughts or heat waves may actually increase this isolation and kill off the types that are more social in nature, thus decreasing diversity. 
+
+Evaluation: This article’s findings are described as “data-limited” and should be taken with a grain of salt. Additionally, many of the findings, like the one that says droughts and heat waves may favor more isolated bees, are based on speculation and prediction based on other research articles. 
+
+Relevance: This article will be useful for our final project because it examines not only how temperature may impact bee population size and behavior, but also how specific weather events impact them as well. There aren’t many concrete numbers to quote, but the ideas may be used as a basis for our understanding of why certain populations might be dwindling or rising in our analysis. 
+
+Tags: temperature, extreme-weather-events, bee-population, bee-behavior, traits
+
+__________________________________________________________________________________________________________________________
+
+
+*2)	Karbassioon, A., Yearlsey, J., Dirilgen, T., Hodge, S., Stout, J. C., & Stanley, D. A. (2023). Responses in honeybee and bumblebee activity to changes in weather conditions. Oecologia, 201(3), 689-701.*
+
+Summary: This article focuses on how different weather events impact certain bee species. Its focus is on foraging activity and pollination is impacted, because those are key tools that impact agriculture and the natural ecosystem. The paper finds that certain species, specifically honeybees, are the most sensitive to weather changes on a small scale (day-by-day as opposed to year-by-year). The article also shows how, if one species were to decrease activity because of the weather, other species may increase their activity, which could lead to unpredictable outcomes. 
+
+Evaluation: Karbasioon et. al provide concrete sources for how researchers already view bees behavior in certain conditions. For example, it is said that honeybees are not caught flying in temperatures above 42 degrees Celsius, and that precipitation, wind, and even cloud cover will also decrease their flights. The studies done in this are from a small period of time during the spring of 2019, so there is no analysis on long-term effects. 
+
+Relevance: It will be very useful to cite key statistics from this article (like the 42 degree max temperature) in our project, as that would be hard to gather from a single dataset. Since this article also uses a small sample for its research, it will be useful to examine how exactly it accounts for missing data that we will also suffer from
+
+Tags: bee-behavior, temperature, climate, pollination
+
+_________________________________________________________________________________________________________________________
+
+*3)	Abou-Shaara, H. F., Owayss, A. A., Ibrahim, Y. Y., & Basuny, N. K. (2017). A review of impacts of temperature and relative humidity on various activities of honey bees. Insectes sociaux, 64(4), 455-463.*
+
+Summary: Abou-Shaara et. al focus on how temperature impacts different honeybee activities such as pollination and sociality. They also outline various facts about bees that are useful for understanding the later findings, such as colony sizes and number of subspecies. The studies show the temperature ranges at which honeybees display abnormal behavior, and the average temperatures captured within colonies, which implies there are ideal temperatures for bees survival. Seasonal colony size fluctuation, particularly the loss of numbers during the winter, is also shown. 
+
+Evaluation: Lots of concrete numbers are shown that support how temperature impacts bees in both numbers and behavior. What’s unique about this article is that it also examines the anatomy and physical characteristics of bees at certain temperatures, such as brain activity and incubation. Humidity is also examined with relation to egg laying. 
+
+Relevance: It is extremely useful to have a baseline for what temperatures bees thrive in, and unlike the previous article, this one shows high and low temperatures and their impacts. Also, it is useful to see statistics on potential population impactors like incubation, as that can be used to explain why our data might look the way it does.
+
+_________________________________________________________________________________________________________________________
+
+*4)	Carril, O. M., & Wilson, J. S. (2023). Common bees of western North America (Vol. 124). Princeton University Press.*
+
+Summary: This is a book about bee types in western North America. It contains a reference table of contents at the beginning, which makes it easy to search up a specific bee type. Each page contains pictures, a description of what makes it a unique type, and general behavior or differences between sex. 
+
+Evaluation: This book outlines the number of bee species, as well as which ones are most common or unique in North America, specifically the Western region around the Rocky Mountains and down into Texas. Each bee is outlined in great visual detail, and it is also described the differences between bees and wasps. 
+
+Relevance: Knowing specifics of bee genera and species is important because each type may have different behaviors that could impact their dependencies or behaviors around certain conditions. It is also helpful just to have visual images of what we are going to be examining. 
+
+_________________________________________________________________________________________________________________________
+
+*5)	Hamblin, A. L., Youngsteadt, E., & Frank, S. D. (2018). Wild bee abundance declines with urban warming, regardless of floral density. Urban Ecosystems, 21(3), 419-428.*
+
+Summary:
+ This study looks at how rising city temperatures affect wild bees. The researchers studied 18 sites around Raleigh, North Carolina, to see how temperature, pavement, and flower availability relate to bee numbers. They found that bee abundance dropped by about 40% for every 1°C increase in temperature. Even when flowers were abundant, hotter areas still had fewer bees, especially smaller, heat-sensitive ones.
+ 
+Evaluation:
+ This study is strong because it uses real field data and directly compares temperature, pavement, and flower cover. However, it only focuses on one city, so it might not apply to other regions. Other factors like pollution or pesticide use could also influence the results.
+ 
+Relevance:
+ This article is useful because it shows how urban heat can reduce bee populations, even when resources like flowers are available. It helps support how extreme heat and urban environments impact bee diversity in Oregon.
+ 
+ ________________________________________________________________________________________________________________________
+
+*6)	Polidori, C., Ferrari, A., Ronchetti, F., Tommasi, N., & Nalini, E. (2023). Warming up through buildings and roads: what we know and should know about the Urban Heat Island effect on bees. Frontiers in Bee Science, 1, 1269600.*
+
+Summary:
+ This paper reviews how the “urban heat island” effect impacts bees in cities. The authors discuss how higher temperatures might change bee traits like body size, wings, and social behavior. They predict that smaller bees might become more common, while others could struggle with heat stress or dryness.
+ 
+Evaluation:
+ This article does a good job summarizing what’s known about how urban heat affects bees and their traits. However, it’s mostly based on theory and doesn’t include new data, so some claims are more predictions than proven facts.
+ 
+Relevance:
+ This article helps us think about why temperature affects bees and how extreme heat might filter out certain traits or species. It’ll be helpful for forming hypotheses about how extreme weather impacts bee communities in urban areas.
+ 
+_________________________________________________________________________________________________________________________
+
+*7)	Vilchez-Russell, K. A., & Rafferty, N. E. (2024). Effects of heat shocks, heat waves, and sustained warming on solitary bees. Frontiers in Bee Science, 2, 1392848.*
+
+Summary:
+ This article reviews how different types of warming, like short heat shocks or long heat waves, affect solitary bees, which make up most bee species. It shows that extreme heat can increase bee deaths, change sex ratios, and affect physiology, but most of the existing data come from just a few species.
+ 
+Evaluation:
+ It’s useful because it breaks down how various kinds of heat events impact bees and explains the biological side of it. The downside is that it’s a review, not an experiment, and most of the research is limited to a few bee types.
+ 
+Relevance:
+ This will help connect extreme weather events, like heat waves, to changes in bee survival and diversity. It also supports including factors like species traits or life strategies (solitary vs. social) in analysis.
+ 
+_________________________________________________________________________________________________________________________
+
+*8)	Kazenel, M. R., Wright, K. W., Griswold, T., Whitney, K. D., & Rudgers, J. A. (2024). Heat and desiccation tolerances predict bee abundance under climate change. Nature, 628(8007), 342-348.*
+
+Summary:
+ This long-term study looked at how bee communities changed over 16 years in a region getting hotter and drier. The researchers found that bees that could handle heat and dryness increased, while others declined. Over time, communities became dominated by drought-tolerant species, leading to less diversity overall.
+ 
+Evaluation:
+ The study is strong because it uses long-term data and connects bee traits directly to climate effects. However, it’s not based in cities, so it might not fully represent urban conditions, and some bee groups had limited data.
+ 
+Relevance:
+ This study supports the idea that extreme weather causes trait-based shifts in bee communities. It gives us a good comparison for understanding how extreme heat or drought could shape bee diversity in Oregon’s urban areas.
+ 
+_________________________________________________________________________________________________________________________
+
+*9) Herrmann, J., Buchholz, S., & Theodorou, P. (2023). The degree of urbanisation reduces wild bee and butterfly diversity and alters the patterns of flower-visitation in urban dry grasslands. Scientific Reports, 13(1), 2702.*
+
+Summary:
+ This paper looks at how different levels of urbanization affect bees and butterflies in dry grasslands in Germany. It found that more pavement and buildings meant fewer bee species, while more flowers and bare soil helped increase diversity. Areas with heavy development had fewer bees overall, but flower-rich spots helped balance that out.
+ 
+Evaluation:
+ This study is well done because it uses real-world data and looks at both flower resources and nesting areas. The limitation is that it focuses on one type of habitat, so it might not apply to all city environments.
+ 
+Relevance:
+ This article helps us understand how land use and nesting areas affect bee diversity and how urban factors and extreme weather influence bees in developed areas.
+ 
+_________________________________________________________________________________________________________________________
+
+*10) Geppert, C., Cappellari, A., Corcos, D., Caruso, V., Cerretti, P., Mei, M., & Marini, L. (2023). Temperature and not landscape composition shapes wild bee communities in an urban environment. Insect Conservation and Diversity, 16(1), 65-76.*
+
+Summary:
+ This study compared how temperature and land cover affect bee communities in European cities. It found that temperature had a stronger influence than things like green space or pavement. Hotter sites had noticeably different bee communities than cooler ones.
+
+Evaluation:
+ It’s a helpful study because it directly compares temperature to landscape factors in cities. However, it used a limited number of sites and focused on average temperatures instead of short-term extreme events.
+ 
+Relevance:
+ This shows that heat is one of the biggest factors shaping bee diversity in urban areas. It also gives support for using temperature data as a main variable in our project.
+
+```{r cars}
+summary(cars)
+```
