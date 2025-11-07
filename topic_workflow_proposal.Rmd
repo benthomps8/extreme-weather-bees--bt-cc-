@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Dataset Identification
-Datset 1: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
+Dataset 1: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
 This dataset provides an Excel CSV file for different storm events in Oregon, such as droughts and tornadoes. For this project, we will use the "Heat" event type data (instances of heat above 100 degrees) and select only counties in Oregon. Each instance of the data was collected by a different source (listed on the spreadsheet), such as Official NWS Observations, Trained spotters, and county officials. The data includes values for start date, end date, geographic zone, specific temperatures, deaths, and injuries. We will have to manually add a county column extracted from the zone column, in order to join it with our OBA data. I also wanted to add cold events but there is not much data there. 
 
 Dataset 2:
@@ -23,10 +23,23 @@ Dataset 2:
 
 
 
-## Workflow Plan
+## Workflow Plan (review)
+Before we join our datasets together, we will have to clean the data. For the OBA dataset, we will want to only keep the columns for specimen, genus, date, county, locality, the coordinate columns, species sex, and the plant genus as well. We don't really have a need to keep the ID columns for example. We will also need to create a new date column that follows the same conventions as the one in the extreme heat dataset. This means using excel functions to figure out if a date in the OBA dataset falls within the begin/end date on the extreme heat dataset. For our extreme heat dataset (Dataset 1), we will want to only keep the relevant columns. This means Removing the columns for zone, event type (All of them are the same since we filtered on the website), deaths, injuries, damage, state, timezone, event ID, and the other identification columns. We pretty much need to just keep the start date, end date, county, and description columns (in case we need to examine specific temperatures). 
+
+Once we clean the data, we can join the OBA data table and the first extreme heat dataset on the County and date columns, since they follow the same naming conventions for each table. It will be an outer join. We will have some null values in the instances of the bees and plants that didn't fall within one of the heatwaves. We will want to compare our data collected outside of heatwaves, with the data in the heatwaves, to see if the heat impacted pollination or bee appearances or anything else. 
+
+After joining the data, we will want to figure out a null hypothesis and alternative hypothesis. In this project, these are as follows:
+
+Null: Extreme heat events have no impact on bee's pollination
+Alternative: Extreme heat causes bees to pollinate fewer flowers
+
+Then, we will prepare for AB testing by then shuffling the data, without replacement, on the heatwave column. This will randomly assign values of heatwaves or not heatwaves to the bees. We can then simulate this x number of times, probably 1000 or 10000, to simulate a totally random population null model. We then calculate the p value with math and determine whether or not to reject our null. 
+
+
 
 
 
 
 ## Partner Contributions
+
 
