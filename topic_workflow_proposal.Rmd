@@ -14,20 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Extreme weather events are rapidly emerging as one of the biggest climate-driven ecological stressors worldwide (IPCC 2021). Heat waves, cold snaps, ice storms, atmospheric rivers, and other short-duration extremes are increasing in frequency and severity, and these events can trigger massive ecological impacts in a matter of hours or days (Bilton et al. 2019; Thornton et al. 2023). Oregon is already experiencing rapid swings in temperature and winter storm intensity, with climate projections suggesting that extreme weather will become increasingly more common in the future (Oregon Climate Change Research Institute 2023). Insects, especially bees, are extremely sensitive to quick shifts in temperature because their flight performance, metabolism, and foraging ability are directly affected by thermal limits (Heinrich 1979; Woods et al. 2019). While there is a huge amount of research showing that pollinator declines are linked to habitat loss and gradual warming trends across landscapes (Potts et al. 2016), less work has focused on what short-term extreme events do to wild bee populations. Because bees support plant reproduction and agricultural production throughout Oregon, understanding how heat waves, cold snaps, and other extreme weather events affect bee diversity is critical for conservation, ecosystem functioning, and resilience in the face of accelerating climate instability.
 Previous research has shown that extreme heat can cause lethal overheating and reduce bee survival by shutting down normal thermoregulation (Pereboom & Biesmeijer 2003; Woods et al. 2019). Other work has shown that sudden freezing temperatures can rapidly kill overwintering bees or prevent them from emerging from nests (Franzén & Öckinger 2012). Research on severe winter storms has found population crashes in bees following ice-heavy winters because ice can cover flowers, prevent foraging, and physically damage habitat structure (Riley et al. 2018). In addition, research shows that bees are already declining due to multiple compounding stressors, including habitat loss and resource limitation (Goulson et al. 2015), which suggests that extreme weather events may add yet another layer of pressure to bee populations. Overall, the literature supports that extreme weather events can directly reduce bee survival, disrupt daily behavior, and shift community composition over time.
 To address this question in Oregon, we will use two main datasets. First, the Oregon Bee Atlas dataset provides species-level records and sampling data across many Oregon counties. Second, the NOAA Storm Events Database provides time and location records of extreme heat events, extreme cold events, and ice storms. Because the NOAA data is categorized by county or zone and not by habitat type, our analyses will focus on Oregon-wide patterns rather than trying to isolate “urban” vs “rural” differences. By aligning bee sampling dates with storm event windows, we can evaluate whether changes in bee diversity occur immediately after extreme weather events such as extreme heat, extreme cold, or ice storm events.
-The purpose of our study is to measure how specific extreme weather events influence bee observations across Oregon. We will compare bee data from before and after such weather events, and test whether there are consistent patterns in diversity and species composition. This analysis will help fill an information gap, because most research to date has focused on gradual warming trends or individual mechanisms, rather than real-world event-driven impacts across a regional scale.
-Our main hypotheses are:
-H1) We predict that extreme heat, extreme cold, and ice storm events will reduce bee diversity and detections across Oregon following the event.
-H2) We predict that Oregon counties with extreme weather events will shift toward more generalist, more disturbance-tolerant bee species.
-If supported, these results will help guide conservation planning under future climate scenarios by identifying which types of extreme weather events are most impactful for bees. This could help natural resource managers target conservation efforts such as planting strategies, habitat protection, or nest site support in areas most at risk as climate extremes increase.
-
-
-
-## Dataset Identification
-Dataset 1: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
-This dataset provides an Excel CSV file for different storm events in Oregon, such as droughts and tornadoes. For this project, we will use the "Heat" event type data (instances of heat above 100 degrees) and select only counties in Oregon. Each instance of the data was collected by a different source (listed on the spreadsheet), such as Official NWS Observations, Trained spotters, and county officials. The data includes values for start date, end date, geographic zone, specific temperatures, deaths, and injuries. We will have to manually add a county column extracted from the zone column, in order to join it with our OBA data. I also wanted to add cold events but there is not much data there. 
-
-Dataset 2: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
-Added additional dataset from the same source. This time, I queried for winter weather, winter storm, ice storm, frost/freeze, extreme cold/wind chill, and cold/wind chill. Metadata is the same as dataset 1 for extreme heat. This dataset only has one date, no start and end. This is okay, as we will likely only look at the end date for the heat data anyways. 
+The purpose of our study is to measure how specific extreme weather events influence bee observations across Oregon. We will compare bee data from before and after such weather events, and test whether there are consistent patterns in diversity and species composition. This analysis will help fill an information gap, because most research to date has focused on gradual warming trends or individual mechanisms, rather than real-world event-driven impacts across a regional scale. Our main hypothesis is: We predict that extreme heat, extreme cold, and ice storm events will reduce bee diversity across Oregon following the weather events. If supported, these results will help guide conservation planning under future climate scenarios by identifying which types of extreme weather events are most impactful for bees. This could help natural resource managers target conservation efforts such as planting strategies, habitat protection, or nest site support in areas most at risk as climate extremes increase.
 
 References
 Bilton, D. T., McGill, R. A. R., & Parker, D. J. (2019). Extreme events drive range contraction in a cold-adapted species. Global Change Biology, 25(11), 3576–3587.
@@ -42,6 +29,12 @@ Riley, D. G., Browning, L. E., & Withrow, J. R. (2018). Ice storms, overwinterin
 Thornton, P. K., Whitfield, S., & Challinor, A. J. (2023). Climate extremes and their implications for global food systems. Annual Review of Environment and Resources, 48, 203–229.
 Woods, H. A., Dillon, M. E., & Pincebourde, S. (2019). The roles of microclimatic diversity and of behavior in mediating the responses of ectotherms to climate change. Journal of Thermal Biology, 84, 80–92.
 
+## Dataset Identification
+Dataset 1: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
+This dataset provides an Excel CSV file for different storm events in Oregon, such as droughts and tornadoes. For this project, we will use the "Heat" event type data (instances of heat above 100 degrees) and select only counties in Oregon. Each instance of the data was collected by a different source (listed on the spreadsheet), such as Official NWS Observations, Trained spotters, and county officials. The data includes values for start date, end date, geographic zone, specific temperatures, deaths, and injuries. We will have to manually add a county column extracted from the zone column, in order to join it with our OBA data. I also wanted to add cold events but there is not much data there. 
+
+Dataset 2: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
+Added additional dataset from the same source. This time, I queried for winter weather, winter storm, ice storm, frost/freeze, extreme cold/wind chill, and cold/wind chill. Metadata is the same as dataset 1 for extreme heat. This dataset only has one date, no start and end. This is okay, as we will likely only look at the end date for the heat data anyways. 
 
 
 ## Workflow Plan (review)
@@ -57,10 +50,9 @@ Alternative: Extreme weather and temperature causes bees to pollinate fewer flow
 Then, we will prepare for AB testing by then shuffling the data, without replacement, on the weather event column. This will randomly assign values of event (ex/, heatwaves or not heatwaves) to the bees. We can then simulate this x number of times, probably 1000 or 10000, to simulate a totally random population null model. We then calculate the p value with math and determine whether or not to reject our null. 
 
 
-
-
-
-
 ## Partner Contributions
 
+Cody Coppage: I completed the literature review and much of the preliminary research into how extreme weather affects bees in different ways. I also helped find the NOAA database and collectively worked with Ben on how we will implicate the NOAA dataset into our project.
+
+Ben Thompson:
 
