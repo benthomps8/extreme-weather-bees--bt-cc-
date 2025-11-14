@@ -31,7 +31,7 @@ Woods, H. A., Dillon, M. E., & Pincebourde, S. (2019). The roles of microclimati
 
 ## Dataset Identification
 Dataset 1: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
-This dataset provides an Excel CSV file for different storm events in Oregon, such as droughts and tornadoes. For this project, we will use the "Heat" event type data (instances of heat above 100 degrees) and select only counties in Oregon. Each instance of the data was collected by a different source (listed on the spreadsheet), such as Official NWS Observations, Trained spotters, and county officials. The data includes values for start date, end date, geographic zone, specific temperatures, deaths, and injuries. We will have to manually add a county column extracted from the zone column, in order to join it with our OBA data. I also wanted to add cold events but there is not much data there. 
+This dataset provides an Excel CSV file for different storm events in Oregon, such as droughts and tornadoes. For this specific dataset, we are using only the "extreme heat" event ID (instances of heat above 100 degrees) and selecting only counties in Oregon. Each instance of the data was collected by a different source (listed on the spreadsheet), such as Official NWS Observations, Trained spotters, and county officials. The data includes values for start date, end date, geographic zone, specific temperatures, deaths, and injuries. We will have to manually add a county column extracted from the zone column, in order to join it with our OBA data. 
 
 Dataset 2: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
 Added additional dataset from the same source. This time, I queried for winter weather, winter storm, ice storm, frost/freeze, extreme cold/wind chill, and cold/wind chill. Metadata is the same as dataset 1 for extreme heat. This dataset only has one date, no start and end. This is okay, as we will likely only look at the end date for the heat data anyways. 
@@ -48,6 +48,10 @@ Null: Extreme weather events have no impact on bee's pollination
 Alternative: Extreme weather and temperature causes bees to pollinate fewer flowers
 
 Then, we will prepare for AB testing by then shuffling the data, without replacement, on the weather event column. This will randomly assign values of event (ex/, heatwaves or not heatwaves) to the bees. We can then simulate this x number of times, probably 1000 or 10000, to simulate a totally random population null model. We then calculate the p value with math and determine whether or not to reject our null. 
+
+The psuedocode for this process will look something like this:
+
+clean(OBA_data), remove_na(OBA_data), clean(weather_data), join(OBA_data, weather_data, by=County), for (i in 1:10000) {results.append(shuffle(with_replacement=FALSE, by=weather_event))}, plot(results), calculate_p_value(results, observed_statistic)
 
 
 ## Partner Contributions
