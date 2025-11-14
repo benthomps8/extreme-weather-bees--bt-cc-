@@ -34,7 +34,32 @@ Dataset 1: National Centers for Environmental Information - Storm Events Databas
 This dataset provides an Excel CSV file for different storm events in Oregon, such as droughts and tornadoes. For this specific dataset, we are using only the "extreme heat" event ID (instances of heat above 100 degrees) and selecting only counties in Oregon. Each instance of the data was collected by a different source (listed on the spreadsheet), such as Official NWS Observations, Trained spotters, and county officials. The data includes values for start date, end date, geographic zone, specific temperatures, deaths, and injuries. We will have to manually add a county column extracted from the zone column, in order to join it with our OBA data. 
 
 Dataset 2: National Centers for Environmental Information - Storm Events Database (https://www.ncei.noaa.gov/stormevents/)
-Added additional dataset from the same source. This time, I queried for winter weather, winter storm, ice storm, frost/freeze, extreme cold/wind chill, and cold/wind chill. Metadata is the same as dataset 1 for extreme heat. This dataset only has one date, no start and end. This is okay, as we will likely only look at the end date for the heat data anyways. 
+Added additional dataset from the same source. This time, I queried for winter weather, winter storm, ice storm, frost/freeze, extreme cold/wind chill, and cold/wind chill. Metadata is the same as dataset 1 for extreme heat. This dataset only has one date, no start and end. This is okay, as we will likely only look at the end date for the heat data anyways. Dataset was collected by multiple sources (trained spotters, county officials, etc...) and compiled by NOAA. 
+
+Data for both of the datasets contains the following columns:
+EVENT_ID: An identification number used by NOAA
+CZ_NAME_STR: The location of where the event occurred. Typically a zone or region, such as central Oregon or southern coast. This is the column we used for extracting the county.
+BEGIN_DATE: String representing the start date in format DD/MM/YYYY
+BEGIN_TIME: Integer data representing time of day, with values from 0 to 2400
+EVENT_TYPE: Event type we queried for, includes "Heat", "Extreme cold/wind chill", etc...
+MAGNITUDE: Blank column (used for earthquakes, if we had queried for that)
+TOR_F_SCALE: Also blank column
+DEATHS_DIRECT: Integer data. 0 is used for no deaths
+INJURIES_DIRECT: Integer data. 0 is used for no injuries
+DAMAGE_PROPERTY_NUM: Integer data. Estimated number of property damage in USD
+DAMAGE_CROPS_NUM: Integer data. Estimated amount of crop damage in USD.
+STATE_ABBR: String with state abbreviation (all datas are "OR" since that's what we queried for)
+CZ_TIMEZONE: All are "PST-8"
+MAGNITUDE_TYPE: Blank column, used for other disaster types
+EPISODE_ID: Unique ID used by NOAA
+CZ_TYPE: Location (C for county, z for forecast zone)
+CZ_FIPS: FIPS code for specific location
+WFO: Weather Forecast Office in charge of that location
+INJURIES_INDIRECT: Amount of indirect injuries recorded
+DEATHS_INDIRECT: Amount of indirect deaths recorded
+SOURCE: How that data was collected (public, department of highways, etc...)
+
+
 
 
 ## Workflow Plan (review)
