@@ -54,5 +54,5 @@ Then, we will prepare for AB testing by then shuffling the data, without replace
 
 Cody Coppage: I completed the literature review and much of the preliminary research into how extreme weather affects bees in different ways. I also helped find the NOAA database and collectively worked with Ben on how we will implicate the NOAA dataset into our project.
 
-Ben Thompson:
+Ben Thompson: Imported the NOAA extreme weather data and manually added 'County' column via Excel, based on the Zone column. Created outline for Workflow plan and created/pushed to repository. Worked with Cody to create our hypothesis and simplify it. 
 
