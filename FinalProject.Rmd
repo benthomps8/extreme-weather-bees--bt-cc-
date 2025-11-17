@@ -15,8 +15,15 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{Import CSVs}
+```{r}
+OBA_dataset <- read.csv("OBA_2018-2024.csv")
 
+#OBA_dataset
 ```
 
+```{r}
+storm_dataset <- read.csv("storm_data.csv")
+
+#storm_dataset
+```
 
