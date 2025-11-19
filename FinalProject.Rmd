@@ -5,7 +5,16 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r}
+# Import Statements
+
+library(dplyr)
+install.packages("fuzzyjoin")
+library(fuzzyjoin)
+library(lubridate)
+
+
+
 
 ```
 
@@ -69,7 +78,19 @@ storm_dataset_cols_to_drop <- c(
 # Dropping the useless columns from storm
 
 storm_dataset <- storm_dataset[, !(names(storm_dataset) %in% storm_dataset_cols_to_drop)]
-storm_dataset
+#storm_dataset
+```
+
+```{r}
+# Make sure the date columns are date objects 
+
+storm_dataset <- storm_dataset %>%
+  mutate(BEGIN_DATE = mdy(BEGIN_DATE))
+#storm_dataset
+
+OBA_dataset <- OBA_dataset %>%
+  mutate(verbatimEventDate = mdy(verbatimEventDate))
+#OBA_dataset
 ```
 
 ```{r}
@@ -77,10 +98,6 @@ storm_dataset
 ```
 
 ```{r}
-
-```
-
-```{r}
 ```
 
 
@@ -93,6 +110,7 @@ storm_dataset
 
 
 ```{r}
+
 ```
 
 
