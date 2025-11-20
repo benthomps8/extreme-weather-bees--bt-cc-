@@ -37,7 +37,7 @@ OBA_dataset <- read.csv("OBA_2018-2024.csv")
 
 storm_dataset <- read.csv("storm_data.csv")
 
-#storm_dataset
+storm_dataset
 ```
 
 ```{r}
@@ -94,14 +94,31 @@ OBA_dataset <- OBA_dataset %>%
 ```
 
 ```{r}
+# Join Tables
 
+joined_data <- fuzzy_left_join(OBA_dataset, storm_dataset,
+  by = c(
+    "county" = "COUNTY",                        
+    "verbatimEventDate" = "BEGIN_DATE"             
+  ),
+  match_fun = list(`==`, function(bee_date, storm_date) {
+    bee_date >= storm_date & bee_date <= storm_date + 30
+    }
+  )
+)
+
+joined_data
 ```
 
 ```{r}
+# Count of each unique storm that occured before a bee capture instance
+joined_data %>%
+  count(EVENT_TYPE)
 ```
 
 
 ```{r}
+
 ```
 
 
