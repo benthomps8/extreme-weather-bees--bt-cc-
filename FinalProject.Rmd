@@ -18,11 +18,14 @@ library(lubridate)
 
 ```
 
-## R Markdown
+# Introduction 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Extreme weather events are rapidly emerging as one of the biggest climate-driven ecological stressors worldwide (IPCC 2021). Heat waves, cold snaps, ice storms, and other short-duration extreme weather events are increasing in frequency and severity, and these events can trigger massive ecological impacts in a matter of hours or days (Bilton et al. 2019; Thornton et al. 2023). Oregon is already experiencing rapid swings in temperature and winter storm intensity, with climate projections suggesting that extreme weather will become increasingly more common in the future (Oregon Climate Change Research Institute 2023). Insects, especially bees, are extremely sensitive to quick shifts in temperature because their flight performance, metabolism, and foraging ability are directly affected by thermal limits (Heinrich 1979; Woods et al. 2019). While there is a huge amount of research showing that pollinator declines are linked to habitat loss and gradual warming trends across landscapes (Potts et al. 2016), less work has focused on what short-term extreme events do to wild bee populations. Because bees support plant reproduction and agricultural production throughout Oregon, understanding how heat waves, cold snaps, and other extreme weather events affect bee diversity is critical for conservation, ecosystem functioning, and resilience in the face of accelerating climate instability.
+Previous research has shown that extreme heat can cause lethal overheating and reduce bee survival by shutting down normal thermoregulation (Pereboom & Biesmeijer 2003; Woods et al. 2019). Other work has shown that sudden freezing temperatures can rapidly kill overwintering bees or prevent them from emerging from nests (Franzén & Öckinger 2012). Research on severe winter storms has found population crashes in bees following ice-heavy winters because ice can cover flowers, prevent foraging, and physically damage habitat structure (Riley et al. 2018). In addition, research shows that bees are already declining due to multiple compounding stressors, including habitat loss and resource limitation (Goulson et al. 2015), which suggests that extreme weather events may add yet another layer of pressure to bee populations. Overall, the literature supports that extreme weather events can directly reduce bee survival, disrupt daily behavior, and shift community composition over time.
+To address this question in Oregon, we will use two main datasets. First, the Oregon Bee Atlas dataset provides species-level records and sampling data across many Oregon counties. Second, the NOAA Storm Events Database provides time and location records of extreme heat events, extreme cold events, and ice storms. Because the NOAA data is categorized by county or zone and not by habitat type, our analyses will focus on Oregon-wide patterns rather than trying to isolate “urban” vs “rural” differences. By aligning bee sampling dates with storm event windows, we can evaluate whether changes in bee diversity occur immediately after extreme weather events such as extreme heat, extreme cold, or ice storm events.
+The purpose of our study is to measure how specific extreme weather events influence bee observations across Oregon. We will compare bee data from before and after such weather events, and test whether there are consistent patterns in diversity and species composition. This analysis will help fill an information gap, because most research to date has focused on gradual warming trends or individual mechanisms, rather than real-world event-driven impacts across a regional scale. The main questions we aim to answer are how does extreme heat, extreme cold, and ice storm events affect bee diversity across Oregon and how do these events affect different functional groups of bees. The answer to these questions will help guide conservation planning under future climate scenarios by identifying which types of extreme weather events are most impactful for bees and how these events affect bee composition. This could help natural resource managers target conservation efforts such as planting strategies, habitat protection, or nest site support in areas most at risk as climate extremes increase.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# Dataset Identification 
 
 ```{r}
 # Importing Oregon Bee Atlas dataset
@@ -39,6 +42,8 @@ storm_dataset <- read.csv("storm_data.csv")
 
 storm_dataset
 ```
+
+# Methods
 
 ```{r}
 # Specifying columns to drop from storm events dataframe. These columns are not relevant for our analysis
@@ -134,3 +139,19 @@ joined_data %>%
 ```{r}
 ```
 
+# Results
+
+
+# References (Temporary spot. Needs to be changed to BibTex)
+
+Bilton, D. T., McGill, R. A. R., & Parker, D. J. (2019). Extreme events drive range contraction in a cold-adapted species. Global Change Biology, 25(11), 3576–3587.
+Franzén, M., & Öckinger, E. (2012). Climate-driven changes in pollinator communities: The return of the dark side of cold winters. Oikos, 121(3), 437–442.
+Goulson, D., Nicholls, E., Botías, C., & Rotheray, E. L. (2015). Bee declines driven by combined stress from parasites, pesticides, and lack of flowers. Science, 347(6229), 1255957.
+Heinrich, B. (1979). Bumblebee economics. Harvard University Press.
+IPCC. (2021). Climate change 2021: The physical science basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change. Cambridge University Press.
+Oregon Climate Change Research Institute (OCCRI). (2023). The Fifth Oregon Climate Assessment. Oregon State University.
+Pereboom, J. J., & Biesmeijer, J. C. (2003). Thermal constraints for stingless bee foragers: The importance of body size and coloration. Oecologia, 137(1), 42–50.
+Potts, S. G., Imperatriz-Fonseca, V., Ngo, H. T., et al. (2016). The assessment report of the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) on pollinators, pollination, and food production. IPBES Secretariat.
+Riley, D. G., Browning, L. E., & Withrow, J. R. (2018). Ice storms, overwintering survival, and pollinator decline: Evidence from temperate ecosystems. Ecology Letters, 21(4), 650–659.
+Thornton, P. K., Whitfield, S., & Challinor, A. J. (2023). Climate extremes and their implications for global food systems. Annual Review of Environment and Resources, 48, 203–229.
+Woods, H. A., Dillon, M. E., & Pincebourde, S. (2019). The roles of microclimatic diversity and of behavior in mediating the responses of ectotherms to climate change. Journal of Thermal Biology, 84, 80–92.
