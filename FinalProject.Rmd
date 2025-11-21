@@ -2,6 +2,7 @@
 title: "FinalProject"
 author: "Ben Thompson & Cody Coppage"
 date: "`r Sys.Date()`"
+bibliography: "references.bib"
 output: html_document
 ---
 
