@@ -10,7 +10,7 @@ output: html_document
 # Import Statements
 
 library(dplyr)
-install.packages("fuzzyjoin")
+#install.packages("fuzzyjoin")
 library(fuzzyjoin)
 library(lubridate)
 
@@ -33,7 +33,7 @@ The purpose of our study is to measure how specific extreme weather events influ
 
 OBA_dataset <- read.csv("OBA_2018-2024.csv")
 
-#OBA_dataset
+OBA_dataset
 ```
 
 ```{r}
@@ -44,7 +44,13 @@ storm_dataset <- read.csv("storm_data.csv")
 storm_dataset
 ```
 
-# Methods
+# Data Wrangling/Exploration
+```{r}
+# Create "GenusSpecies" Column
+OBA_dataset <- OBA_dataset %>%
+  mutate(GenusSpecies = paste(genus, specificEpithet))
+OBA_dataset
+```
 
 ```{r}
 # Specifying columns to drop from storm events dataframe. These columns are not relevant for our analysis
@@ -117,23 +123,93 @@ joined_data
 ```
 
 ```{r}
-# Count of each unique storm that occured before a bee capture instance
+# Count of each unique storm that occurred before a bee capture instance
 joined_data %>%
   count(EVENT_TYPE)
+joined_data
 ```
 
 
 ```{r}
+# Add Control column. True if control data, false if a storm instance
+joined_data <- joined_data %>%
+  mutate(Control = is.na(EVENT_TYPE))
+joined_data
+```
+
+
+```{r}
+# Remove rows with no species data
+
+joined_data <- joined_data %>%
+  filter(specificEpithet != "")
+joined_data <- joined_data %>%
+  filter(specificEpithet != " ")
+```
+## Data Analysis
+
+```{r}
+# Find Species Richness
+S <- length(unique(joined_data$specificEpithet))
+S
+```
+
+
+```{r}
+# Natural Log of Species Richness
+ln_s <- log(S)
+ln_s
+```
+
+
+```{r}
+# Calculate Proportion of Each Species
+
+species_counts <- joined_data %>%
+  count(specificEpithet, name = 'n')
+
+proportions <- c()
+
+j <- 1
+
+for (i in species_counts$n) {
+  proportions[j] = (i / sum(species_counts$n))
+  j <- j+1
+}
+proportions
+
+
 
 ```
 
 
 ```{r}
+# Calculate Shannon Diversity Index
+H = – Summation[P(i) * lnP(i)].
+
+summation <- 0
+for (p in proportions) {
+  summation <- summation + (p * log(p))
+}
+
+shannon_diversity_index <- (summation * -1)
+
 ```
 
 
 ```{r}
+# Calculate Shannon Diversity Index Another Way
 
+library(vegan)
+
+shannon_diversity_index_2 <- joined_data %>%
+  summarize(diversity = diversity(table(specificEpithet)))
+shannon_diversity_index_2
+
+```
+
+
+```{r}
 ```
 
 
