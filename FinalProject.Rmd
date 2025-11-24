@@ -156,7 +156,7 @@ S
 
 
 ```{r}
-# Natural Log of Species Richness
+# Natural Log of Species Richness 
 ln_s <- log(S)
 ln_s
 ```
@@ -178,13 +178,11 @@ for (i in species_counts$n) {
 }
 proportions
 
-
-
 ```
 
 
 ```{r}
-# Calculate Shannon Diversity Index
+# Calculate Overall Shannon Diversity Index
 H = – Summation[P(i) * lnP(i)].
 
 summation <- 0
@@ -210,10 +208,73 @@ shannon_diversity_index_2
 
 
 ```{r}
+# Calculate Shannon Diversity for Control Group
+
+joined_data
+control_table <- joined_data %>%
+  filter(Control == TRUE)
+
+S_control <- length(unique(control_table$specificEpithet))
+
+species_counts_control <- control_table %>%
+  count(specificEpithet, name = 'n')
+
+proportions_control <- c()
+
+j <- 1
+
+for (i in species_counts_control$n) {
+  proportions_control[j] = (i / sum(species_counts_control$n))
+  j <- j+1
+}
+proportions_control
+
+summation_control <- 0
+for (p in proportions_control) {
+  summation_control <- summation_control + (p * log(p))
+}
+
+shannon_diversity_index_control <- (summation_control * -1)
+
+shannon_diversity_index_control
 ```
 
 
 ```{r}
+
+
+```
+
+
+```{r}
+# Calculate Shannon Diversity of Treatment Group
+joined_data
+not_control_table <- joined_data %>%
+  filter(Control == FALSE)
+
+S_not_control <- length(unique(not_control_table$specificEpithet))
+
+species_counts_not_control <- not_control_table %>%
+  count(specificEpithet, name = 'n')
+
+proportions_not_control <- c()
+
+j <- 1
+
+for (i in species_counts_not_control$n) {
+  proportions_not_control[j] = (i / sum(species_counts_not_control$n))
+  j <- j+1
+}
+proportions_not_control
+
+summation_not_control <- 0
+for (p in proportions_not_control) {
+  summation_not_control <- summation_not_control + (p * log(p))
+}
+
+shannon_diversity_index_treatment <- (summation_not_control * -1)
+
+shannon_diversity_index_treatment
 ```
 
 # Results
