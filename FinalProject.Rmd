@@ -277,6 +277,73 @@ shannon_diversity_index_treatment <- (summation_not_control * -1)
 shannon_diversity_index_treatment
 ```
 
+```{r}
+# Find dates of events
+Event_Date_Data <- joined_data %>%
+  filter(!is.na(EVENT_TYPE)) %>%
+  select(BEGIN_DATE, EVENT_TYPE) %>%
+  distinct()
+```
+
+```{r}
+# Create subsets of bees 30-days pre/post events and compute Shannon diversity for each
+n_events <- nrow(Event_Date_Data)
+
+pre_div  <- numeric(n_events)
+post_div <- numeric(n_events)
+
+for (i in 1:n_events) {
+  event_day <- Event_Date_Data$BEGIN_DATE[i]
+  
+  # Bees 30 days before
+  pre_bees <- joined_data %>%
+    filter(verbatimEventDate >= event_day - 30,
+           verbatimEventDate <  event_day)
+  
+  # Bees 30 days after
+  post_bees <- joined_data %>%
+    filter(verbatimEventDate >  event_day,
+           verbatimEventDate <= event_day + 30)
+  
+  # Counts per species
+  pre_tab  <- table(pre_bees$GenusSpecies)
+  post_tab <- table(post_bees$GenusSpecies)
+  
+  # Calculate Shannon diversity
+  pre_div[i]  <- diversity(pre_tab)
+  post_div[i] <- diversity(post_tab)
+}
+```
+
+
+```{r}
+# Comparison Table
+diversity_results <- data.frame(EVENT_DATE = Event_Date_Data$BEGIN_DATE,
+                                EVENT_TYPE      = Event_Date_Data$EVENT_TYPE,
+                                shannon_pre30   = pre_div,
+                                shannon_post30  = post_div,
+                                diff_post_minus_pre = post_div - pre_div)
+
+diversity_results
+```
+
+```{r}
+# Find the means for each event type
+event_type_summary <- diversity_results %>%
+  group_by(EVENT_TYPE) %>%
+  summarise(mean_pre  = mean(shannon_pre30),
+            mean_post = mean(shannon_post30),
+            mean_difference = mean(diff_post_minus_pre),
+            n_events = n())
+
+event_type_summary
+```
+```{r}
+# Bar graph showing differences in pre/post event, grouped by event type
+
+```
+
+
 # Results
 
 
