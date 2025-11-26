@@ -13,6 +13,7 @@ library(dplyr)
 #install.packages("fuzzyjoin")
 library(fuzzyjoin)
 library(lubridate)
+library(tidyverse)
 
 
 
@@ -183,7 +184,7 @@ proportions
 
 ```{r}
 # Calculate Overall Shannon Diversity Index
-H = – Summation[P(i) * lnP(i)].
+# H = – Summation[P(i) * lnP(i)].
 
 summation <- 0
 for (p in proportions) {
@@ -276,6 +277,46 @@ shannon_diversity_index_treatment <- (summation_not_control * -1)
 
 shannon_diversity_index_treatment
 ```
+```{r}
+# Create function to compute Shannon Diversity (reproducible)
+
+shannon_diversity <- function(df, col) {
+  col <- deparse(substitute(col))
+
+  S <- length(unique(df[[col]]))
+  
+  species_counts <- df %>%
+    count(.data[[col]], name = 'n')
+  
+  proportions <- c()
+  
+  j <- 1
+
+  for (i in species_counts$n) {
+    proportions[j] = (i / sum(species_counts$n))
+    j <- j+1
+  }
+  
+  summation <- 0
+  for (p in proportions) {
+    summation <- summation + (p * log(p))
+  }
+
+  H <- (summation * -1)
+  
+  return(H)
+  
+}
+
+shannon_diversity(not_control_table, specificEpithet)
+
+```
+
+```{r}
+
+
+```
+
 
 ```{r}
 # Find dates of events
