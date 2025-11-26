@@ -311,11 +311,49 @@ shannon_diversity <- function(df, col) {
 shannon_diversity(not_control_table, specificEpithet)
 
 ```
+So, the Shannon diversity for "storm bees" was 4.3852, and the shannon diversity for bees captured in normal circumstances was 4.646. The diversity is lower for bees captured around storms (Extreme heat or freezing temperatures), but is it significantly so? We will use A/B testing to determine if so.
+
 
 ```{r}
-
+# Set seed for reproducibility, and the number of iterations to shuffle
+set.seed(1)   
+n_iterations <- 1000
 
 ```
+
+
+
+
+
+```{r}
+# Perform AB Testing
+
+shuffle_results <- c()
+
+for (i in 1:n_iterations) {
+  shuffled_col <- sample(joined_data$Control)
+  shuffled <- joined_data %>%
+    mutate(Control = shuffled_col)
+  shuffled_treatment <- shuffled %>%
+    filter(Control == FALSE)
+  
+  
+  shuffle_results[i] <- shannon_diversity(shuffled_treatment, specificEpithet)
+}
+
+sort(shuffle_results)
+
+```
+
+```{r}
+# Assign P Value (Probability that our observed shannon diversiy for storm bees is at least that small if Null were true)
+
+p_value <- mean(shuffle_results <= shannon_diversity(not_control_table, specificEpithet))
+p_value
+```
+
+
+
 
 
 ```{r}
