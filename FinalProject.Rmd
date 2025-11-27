@@ -422,6 +422,21 @@ event_type_summary
 
 ```
 
+```{r}
+# Create object vectors for Genera dependent on if they are specialists or generalists. Genera that have species that are both are excluded for clarity
+
+specialist_genera <- c("Diadasia", "Peponapis", "Hesperapis", "Dufourea", "Chelostoma", "Perdita", "Colletes", "Melissodes")
+
+generalist_genera <- c("Bombus","Halictus","Apis","Lasioglossum","Eucera","Ceratina","Agapostemon",
+                       "Xylocopa","Osmia","Anthophora","Megachile","Hylaeus","Calliopsis","Heriades",
+                       "Ashmeadiella","Atoposmia","Trachusa","Dianthidium","Tetraloniella",
+                       "Pseudoanthidium","Protosmia","Anthidiellum","Hoplitis","Habropoda")
+# For clarity
+excluded_genera <- c("Andrena","Micralictoides","Stelis","Sphecodes","Melecta","Coelioxys","Epeolus",
+                     "Neolarra","Oreopasites","Nomia","Triepeolus","Biastes","Epimelissodes",
+                     "Protohalonia","Dioxys","Zacosmia","Holcopasites","Brachymelecta")
+```
+
 
 # Results
 
