@@ -424,6 +424,8 @@ event_type_summary
 
 ```{r}
 # Create object vectors for Genera dependent on if they are specialists or generalists. Genera that have species that are both are excluded for clarity
+# Remove whitespace
+joined_data$Genus <- trimws(sub(" .*", "", joined_data$Species))
 
 specialist_genera <- c("Diadasia", "Peponapis", "Hesperapis", "Dufourea", "Chelostoma", "Perdita", "Colletes", "Melissodes")
 
