@@ -378,6 +378,127 @@ As we can see, our observed statistic (Shannon diversity of storm bees) falls we
 
 ## Data Analysis: Does freezing temperatures impact bee diversity?
 
+Now, we want to do another AB test, but this time just to see if frost/freeze impacts bee diversity (ignoring extreme heat). Ou rnull hypothesis this time will be: Freezing temperatures do not impact bee diversity according to the Shannon diversity index. 
+
+```{r}
+# Create new table to analyze freezing temperatures
+
+joined_data_frost <- joined_data %>%
+  mutate(frost = coalesce(EVENT_TYPE == "Frost/Freeze", FALSE))
+joined_data_frost
+```
+
+```{r}
+# Calculate Observed Statistic
+joined_data_frost_filtered <- joined_data_frost %>%
+  filter(frost == TRUE)
+shannon_diversity(joined_data_frost_filtered, specificEpithet)
+```
+
+
+```{r}
+# Perform AB Test
+shuffled_frost_results <- c()
+for (i in 1:1000) {
+  joined_data_frost <- joined_data_frost %>%
+    mutate(frost_shuffled = sample(frost))
+  temp <- joined_data_frost %>%
+    filter(frost_shuffled == TRUE)
+  shuffled_frost_results[i] <- shannon_diversity(temp, specificEpithet)
+}
+
+sort(shuffled_frost_results)
+```
+
+
+```{r}
+# Compute P Value for freezing temperatures
+p_value_frost <- mean(shuffled_frost_results <= shannon_diversity(joined_data_frost_filtered, specificEpithet))
+p_value_frost
+```
+
+```{r}
+# Histogram for frost results
+ggplot(data.frame(x = shuffled_frost_results), aes(x)) +
+  geom_histogram() +
+  ggtitle("Distribution of Shuffled Frost Results + Line for Observed Statistic") + 
+  geom_vline(xintercept = shannon_diversity(joined_data_frost_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1)
+
+
+```
+As we see here, the p value is once again 0. This means that we reject the null, and that freezing temperatures does negatively impace the shannon diversity of bees.
+
+## Data Analysis - AB Test for Extreme Heat
+For our last AB test, we will look at whether or not extreme heat impacts bee diversity. Our null hpyothesis: Extreme heat events do not impact the diversity of bees. 
+```{r}
+# Create new table to analyze extreme heat
+
+joined_data_heat <- joined_data %>%
+  mutate(heat = coalesce(EVENT_TYPE == "Excessive Heat", FALSE))
+joined_data_heat
+```
+
+```{r}
+# Calculate Observed Statistic
+joined_data_heat_filtered <- joined_data_heat %>%
+  filter(heat == TRUE)
+shannon_diversity(joined_data_heat_filtered, specificEpithet)
+
+```
+
+```{r}
+# Perform AB Test
+shuffled_heat_results <- c()
+for (i in 1:1000) {
+  joined_data_heat <- joined_data_heat %>%
+    mutate(heat_shuffled = sample(heat))
+  temp <- joined_data_heat %>%
+    filter(heat_shuffled == TRUE)
+  shuffled_heat_results[i] <- shannon_diversity(temp, specificEpithet)
+}
+
+sort(shuffled_heat_results)
+
+```
+
+```{r}
+p_value_heat <- mean(shuffled_heat_results <= shannon_diversity(joined_data_heat_filtered, specificEpithet))
+p_value_heat
+
+```
+```{r}
+ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
+  geom_histogram() +
+  ggtitle("Distribution of Shuffled Heat Results + Line for Observed Statistic") + 
+  geom_vline(xintercept = shannon_diversity(joined_data_heat_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1)
+
+```
+Once again, we reject the Null hypothesis. We also see based on the difference in shannon diversities, that heat actually has more impact on the diversity than the extreme cold!
+
+```{r}
+diversities <- data.frame(
+  Category = c("Storm"),
+  Frost = shannon_diversity(joined_data_frost_filtered, specificEpithet),
+  Heat = shannon_diversity(joined_data_heat_filtered, specificEpithet),
+  "No Storm" = shannon_diversity_index_control
+)
+
+diversities_long <- diversities %>%
+  pivot_longer(cols = -Category, names_to = "Type", values_to = "Value")
+
+ggplot(diversities_long, aes(x = Type, y = Value, fill = Type)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  labs(title = "Diversity by Category", x = "Category Type", y = "Shannon Diversity")
+
+
+
+```
+
+
+
+
+
+
 
 
 
