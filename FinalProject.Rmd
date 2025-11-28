@@ -147,7 +147,9 @@ joined_data <- joined_data %>%
 joined_data <- joined_data %>%
   filter(specificEpithet != " ")
 ```
-## Data Analysis
+## Data Analysis - AB Test for Storm vs No Storm
+
+Before we do our AB test to determine whether extreme weather impacts bee diversity, we need to come up with a null hypothesis to either reject or not. Or null hypothesis will be: Bees are equally diverse, according to the shannon diversity index, in areas which have recently been impacted by either extreme heat or freezing temperatures. If we get a p value of less than 0.05, we will reject this null and assume that the weather does impact bees. 
 
 ```{r}
 # Find Species Richness
@@ -324,7 +326,6 @@ n_iterations <- 1000
 
 
 
-
 ```{r}
 # Perform AB Testing
 
@@ -333,15 +334,16 @@ shuffle_results <- c()
 for (i in 1:n_iterations) {
   shuffled_col <- sample(joined_data$Control)
   shuffled <- joined_data %>%
-    mutate(Control = shuffled_col)
+    mutate(shuffled_control = shuffled_col)
   shuffled_treatment <- shuffled %>%
-    filter(Control == FALSE)
+    filter(shuffled_control == FALSE)
   
   
   shuffle_results[i] <- shannon_diversity(shuffled_treatment, specificEpithet)
 }
 
 sort(shuffle_results)
+
 
 ```
 
@@ -351,7 +353,30 @@ sort(shuffle_results)
 p_value <- mean(shuffle_results <= shannon_diversity(not_control_table, specificEpithet))
 p_value
 ```
+A P value of 0 means that we reject the null hypothesis. This means that the extreme weather events do impact bee diversity, making the bees less diverse in areas that recently experienced either extreme heat or freezing temperatures. 
 
+
+
+```{r}
+# Histogram of Shuffled Results
+ggplot(data.frame(x = shuffle_results), aes(x)) +
+  geom_histogram() +
+  ggtitle("Distribution of Shuffled AB Test Shannon Diversities") 
+
+
+```
+
+```{r}
+# Histogram of Shuffled Results, plus vertical line showing non-shuffled diversity
+ggplot(data.frame(x = shuffle_results), aes(x)) +
+  geom_histogram() +
+  ggtitle("Distribution of Shuffled AB Test Shannon Diversities + Line for Observed Statistic") + 
+  geom_vline(xintercept = shannon_diversity(not_control_table, specificEpithet), color = "red", linetype = "dashed", size = 1)
+
+```
+As we can see, our observed statistic (Shannon diversity of storm bees) falls well outside of the limits of our shuffled results, meaning it is statistically significant.
+
+## Data Analysis: Does freezing temperatures impact bee diversity?
 
 
 
