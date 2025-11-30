@@ -362,7 +362,9 @@ A P value of 0 means that we reject the null hypothesis. This means that the ext
 # Histogram of Shuffled Results
 ggplot(data.frame(x = shuffle_results), aes(x)) +
   geom_histogram() +
-  ggtitle("Distribution of Shuffled AB Test Shannon Diversities") 
+  ggtitle("Distribution of Shuffled AB Test Shannon Diversities") + 
+  xlab("Shuffled Shannon Diversity Values") +
+  ylab("Frequency")
 
 
 ```
@@ -370,9 +372,14 @@ ggplot(data.frame(x = shuffle_results), aes(x)) +
 ```{r}
 # Histogram of Shuffled Results, plus vertical line showing non-shuffled diversity
 ggplot(data.frame(x = shuffle_results), aes(x)) +
-  geom_histogram() +
+  geom_histogram(fill = "grey", color = "black", alpha = 0.8) +
   ggtitle("Distribution of Shuffled AB Test Shannon Diversities + Line for Observed Statistic") + 
-  geom_vline(xintercept = shannon_diversity(not_control_table, specificEpithet), color = "red", linetype = "dashed", size = 1)
+  geom_vline(xintercept = shannon_diversity(not_control_table, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
+  xlab("Shuffled Shannon Diversity Values") +
+  ylab("Frequency") + 
+  theme(
+    plot.title = element_text(size = 10, face = "bold", hjust = 0.5)
+  )
 
 ```
 As we can see, our observed statistic (Shannon diversity of storm bees) falls well outside of the limits of our shuffled results, meaning it is statistically significant.
@@ -421,9 +428,14 @@ p_value_frost
 ```{r}
 # Histogram for frost results
 ggplot(data.frame(x = shuffled_frost_results), aes(x)) +
-  geom_histogram() +
+  geom_histogram(fill = "skyblue", color = "black", alpha = 0.8) +
   ggtitle("Distribution of Shuffled Frost Results + Line for Observed Statistic") + 
-  geom_vline(xintercept = shannon_diversity(joined_data_frost_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1)
+  geom_vline(xintercept = shannon_diversity(joined_data_frost_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
+  xlab("Shuffled Shannon Diversity Values") +
+  ylab("Frequency") +
+  theme(
+    plot.title = element_text(size = 13, face = "bold", hjust = 0.5)
+  )
 
 
 ```
@@ -469,9 +481,14 @@ p_value_heat
 ```
 ```{r}
 ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
-  geom_histogram() +
+  geom_histogram(fill = "skyblue", color = "black", alpha = 0.8, binwidth = 0.005) +
   ggtitle("Distribution of Shuffled Heat Results + Line for Observed Statistic") + 
-  geom_vline(xintercept = shannon_diversity(joined_data_heat_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1)
+  geom_vline(xintercept = shannon_diversity(joined_data_heat_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
+  xlab("Shuffled Shannon Diversity Values") +
+  ylab("Frequency") + 
+  theme(
+    plot.title = element_text(size = 13, face = "bold", hjust = 0.5)
+  )
 
 ```
 Once again, we reject the Null hypothesis. We also see based on the difference in shannon diversities, that heat actually has more impact on the diversity than the extreme cold!
@@ -489,7 +506,11 @@ diversities_long <- diversities %>%
 
 ggplot(diversities_long, aes(x = Type, y = Value, fill = Type)) +
   geom_bar(stat = "identity", show.legend = FALSE) +
-  labs(title = "Diversity by Category", x = "Category Type", y = "Shannon Diversity")
+  ggtitle("Shannon Diversity by Storm") + 
+  xlab("Storm Type") +
+  ylab("Shannon Diversity") + 
+  theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5)) +
+  scale_fill_manual(values = c("Frost" = "blue", "Heat" = "orange", "No Storm" = "grey")) 
 
 
 
