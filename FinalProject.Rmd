@@ -566,6 +566,20 @@ event_type_summary
 ```
 ```{r}
 # Bar graph showing differences in pre/post event, grouped by event type
+# Reshape data for plotting
+plot_data <- event_type_summary %>%
+  select(EVENT_TYPE, mean_pre, mean_post) %>%
+  pivot_longer(cols = c(mean_pre, mean_post), names_to = "period", values_to = "diversity")
+# Change order of data for plot
+plot_data$period <- factor(plot_data$period,
+                           levels = c("mean_pre", "mean_post"),
+                           labels = c("Pre-Event", "Post-Event"))
+# Plot data
+ggplot(plot_data, aes(x = EVENT_TYPE, y = diversity, fill = period)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  labs(x = "Event Type", y = "Mean Shannon Diversity", fill = "Sampling Period", title = "Bee Diversity Before vs. After Storm Events") +
+  scale_fill_manual(values=c("#D71B60", "#05FE04"))
 
 ```
 
@@ -574,7 +588,7 @@ Bees were classified as specialists or generalists using genus-level traits deri
 ```{r}
 # Create object vectors for Genera dependent on if they are specialists or generalists. Genera that have species that are both are excluded for clarity
 # Remove whitespace
-joined_data$Genus <- trimws(sub(" .*", "", joined_data$Species))
+#joined_data$genus <- trimws(sub(" .*", "", joined_data$Species))
 
 specialist_genera <- c("Diadasia", "Peponapis", "Hesperapis", "Dufourea", "Chelostoma", "Perdita", "Colletes", "Melissodes")
 
@@ -587,6 +601,100 @@ excluded_genera <- c("Andrena","Micralictoides","Stelis","Sphecodes","Melecta","
                      "Neolarra","Oreopasites","Nomia","Triepeolus","Biastes","Epimelissodes",
                      "Protohalonia","Dioxys","Zacosmia","Holcopasites","Brachymelecta")
 ```
+```{r}
+# Make a new data frame and loop to analyze community structure
+# Create data table
+structure_table <- joined_data %>%
+  filter(!is.na(EVENT_TYPE)) %>%
+  select(BEGIN_DATE, EVENT_TYPE) %>%
+  distinct()
+n_events_s <- nrow(structure_table)
+# Empty vectors to store results
+pre_spec        <- numeric(n_events)
+pre_gen         <- numeric(n_events)
+post_spec       <- numeric(n_events)
+post_gen        <- numeric(n_events)
+pre_prop_spec   <- numeric(n_events)
+post_prop_spec  <- numeric(n_events)
+# Create for loop to calculate community structure 
+for (i in 1:n_events_s) {
+  
+  event_day <- structure_table$BEGIN_DATE[i]
+  
+  # Bees 30 days before event 
+  pre_bees <- joined_data %>%
+    filter(verbatimEventDate >= event_day - 30,
+           verbatimEventDate <  event_day) %>%
+    filter(genus %in% c(specialist_genera, generalist_genera))
+  
+  # Bees 30 days after event
+  post_bees <- joined_data %>%
+    filter(verbatimEventDate >  event_day,
+           verbatimEventDate <= event_day + 30) %>%
+    filter(genus %in% c(specialist_genera, generalist_genera))
+  
+  # Counts
+  pre_spec[i]  <- sum(pre_bees$genus %in% specialist_genera)
+  pre_gen[i]   <- sum(pre_bees$genus %in% generalist_genera)
+  post_spec[i] <- sum(post_bees$genus %in% specialist_genera)
+  post_gen[i]  <- sum(post_bees$genus %in% generalist_genera)
+  
+  # Find proportions
+  pre_total  <- pre_spec[i]  + pre_gen[i]
+  post_total <- post_spec[i] + post_gen[i]
+  # Found proportions kept giving 0 values so need to make sure that we aren't dividing by 0
+  if (pre_total > 0) {
+    pre_prop_spec[i] <- pre_spec[i] / pre_total
+  } else {
+    pre_prop_spec[i] <- NA
+  }
+  if (post_total > 0) {
+    post_prop_spec[i] <- post_spec[i] / post_total
+  } else {
+    post_prop_spec[i] <- NA
+  }
+}
+```
+
+```{r}
+# Comparison table
+structure_results <- data.frame(EVENT_DATE = structure_table$BEGIN_DATE, 
+                                EVENT_TYPE      = structure_table$EVENT_TYPE,
+                                pre_spec        = pre_spec,
+                                pre_gen         = pre_gen,
+                                post_spec       = post_spec,
+                                post_gen        = post_gen,
+                                pre_prop_spec   = pre_prop_spec,
+                                post_prop_spec  = post_prop_spec,
+                                diff_prop_spec  = post_prop_spec - pre_prop_spec)
+
+structure_results
+```
+
+```{r}
+# Plot the data
+# Summarize by event type
+structure_summary <- structure_results %>%
+  group_by(EVENT_TYPE) %>%
+  summarise(mean_pre_prop_spec  = mean(pre_prop_spec,  na.rm = TRUE),
+    mean_post_prop_spec = mean(post_prop_spec, na.rm = TRUE))
+
+# 2. Change format for ease of plotting
+structure_plot_data <- structure_summary %>%
+  pivot_longer(cols = c(mean_pre_prop_spec, mean_post_prop_spec), names_to = "period", values_to = "prop_spec")
+
+# make sure Pre shows up before Post
+structure_plot_data$period <- factor(structure_plot_data$period, levels = c("mean_pre_prop_spec", "mean_post_prop_spec"), labels = c("Pre-Event", "Post-Event"))
+
+# 3. Grouped bar plot
+ggplot(structure_plot_data, aes(x = EVENT_TYPE, y = prop_spec, fill = period)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  labs(x = "Event Type", y = "Mean Proportion Specialists", fill = "Sampling Period",
+    title = "Bee Community Structure (Specialists vs Generalists) \nBefore and After Extreme Weather Events") +
+  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+```
+
 
 
 # Results
