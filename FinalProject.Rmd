@@ -588,7 +588,7 @@ Bees were classified as specialists or generalists using genus-level traits deri
 ```{r}
 # Create object vectors for Genera dependent on if they are specialists or generalists. Genera that have species that are both are excluded for clarity
 # Remove whitespace
-#joined_data$genus <- trimws(sub(" .*", "", joined_data$Species))
+joined_data$genus <- trimws(sub(" .*", "", joined_data$Species))
 
 specialist_genera <- c("Diadasia", "Peponapis", "Hesperapis", "Dufourea", "Chelostoma", "Perdita", "Colletes", "Melissodes")
 
@@ -642,6 +642,7 @@ for (i in 1:n_events_s) {
   # Find proportions
   pre_total  <- pre_spec[i]  + pre_gen[i]
   post_total <- post_spec[i] + post_gen[i]
+  
   # Found proportions kept giving 0 values so need to make sure that we aren't dividing by 0
   if (pre_total > 0) {
     pre_prop_spec[i] <- pre_spec[i] / pre_total
@@ -659,14 +660,14 @@ for (i in 1:n_events_s) {
 ```{r}
 # Comparison table
 structure_results <- data.frame(EVENT_DATE = structure_table$BEGIN_DATE, 
-                                EVENT_TYPE      = structure_table$EVENT_TYPE,
-                                pre_spec        = pre_spec,
-                                pre_gen         = pre_gen,
-                                post_spec       = post_spec,
-                                post_gen        = post_gen,
-                                pre_prop_spec   = pre_prop_spec,
-                                post_prop_spec  = post_prop_spec,
-                                diff_prop_spec  = post_prop_spec - pre_prop_spec)
+                                EVENT_TYPE = structure_table$EVENT_TYPE,
+                                pre_spec = pre_spec,
+                                pre_gen = pre_gen,
+                                post_spec = post_spec,
+                                post_gen = post_gen,
+                                pre_prop_spec = pre_prop_spec,
+                                post_prop_spec = post_prop_spec,
+                                diff_prop_spec = post_prop_spec - pre_prop_spec)
 
 structure_results
 ```
