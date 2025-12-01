@@ -469,7 +469,7 @@ p_value_heat
 ```
 ```{r}
 ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
-  geom_histogram(fill = "skyblue", color = "black", alpha = 0.8, binwidth = 0.005) +
+  geom_histogram(fill = "orange", color = "black", alpha = 0.8, binwidth = 0.009) +
   ggtitle("Distribution of Shuffled Heat Results + Line for Observed Statistic") + 
   geom_vline(xintercept = shannon_diversity(joined_data_heat_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
