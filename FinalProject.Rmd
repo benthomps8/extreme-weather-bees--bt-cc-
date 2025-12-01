@@ -46,8 +46,10 @@ storm_dataset
 # Data Wrangling/Exploration
 ```{r}
 # Create "GenusSpecies" Column
+
 OBA_dataset <- OBA_dataset %>%
   mutate(GenusSpecies = paste(genus, specificEpithet))
+
 OBA_dataset
 ```
 
@@ -89,7 +91,8 @@ storm_dataset_cols_to_drop <- c(
 # Dropping the useless columns from storm
 
 storm_dataset <- storm_dataset[, !(names(storm_dataset) %in% storm_dataset_cols_to_drop)]
-#storm_dataset
+
+storm_dataset
 ```
 
 ```{r}
@@ -97,11 +100,11 @@ storm_dataset <- storm_dataset[, !(names(storm_dataset) %in% storm_dataset_cols_
 
 storm_dataset <- storm_dataset %>%
   mutate(BEGIN_DATE = mdy(BEGIN_DATE))
-#storm_dataset
 
 OBA_dataset <- OBA_dataset %>%
   mutate(verbatimEventDate = mdy(verbatimEventDate))
-#OBA_dataset
+
+OBA_dataset
 ```
 
 ```{r}
@@ -118,6 +121,7 @@ joined_data
 
 ```{r}
 # Count of each unique storm that occurred before a bee capture instance
+
 joined_data %>%
   count(EVENT_TYPE)
 joined_data
@@ -364,7 +368,7 @@ ggplot(data.frame(x = shuffle_results), aes(x)) +
 ```{r}
 # Histogram of Shuffled Results, plus vertical line showing non-shuffled diversity
 ggplot(data.frame(x = shuffle_results), aes(x)) +
-  geom_histogram(fill = "grey", color = "black", alpha = 0.8) +
+  geom_histogram(fill = "#1E90FF", color = "black", alpha = 0.8, binwidth = 0.009) +
   ggtitle("Distribution of Shuffled AB Test Shannon Diversities + Line for Observed Statistic") + 
   geom_vline(xintercept = shannon_diversity(not_control_table, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
@@ -418,7 +422,7 @@ p_value_frost
 ```{r}
 # Histogram for frost results
 ggplot(data.frame(x = shuffled_frost_results), aes(x)) +
-  geom_histogram(fill = "skyblue", color = "black", alpha = 0.8) +
+  geom_histogram(fill = "skyblue", color = "black", alpha = 0.8, binwidth = 0.009) +
   ggtitle("Distribution of Shuffled Frost Results + Line for Observed Statistic") + 
   geom_vline(xintercept = shannon_diversity(joined_data_frost_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
