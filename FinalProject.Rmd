@@ -397,7 +397,7 @@ shannon_diversity(joined_data_frost_filtered, specificEpithet)
 ```{r}
 # Perform AB Test
 shuffled_frost_results <- c()
-for (i in 1:1000) {
+for (i in 1:n_iterations) {
   joined_data_frost <- joined_data_frost %>%
     mutate(frost_shuffled = sample(frost))
   temp <- joined_data_frost %>%
@@ -430,7 +430,7 @@ ggplot(data.frame(x = shuffled_frost_results), aes(x)) +
 As we see here, the p value is once again 0. This means that we reject the null, and that freezing temperatures does negatively impace the shannon diversity of bees.
 
 ## Data Analysis - AB Test for Extreme Heat
-For our last AB test, we will look at whether or not extreme heat impacts bee diversity. Our null hpyothesis: Extreme heat events do not impact the diversity of bees. 
+For our last AB test, we will look at whether or not extreme heat impacts bee diversity. Our null hypothesis: Extreme heat events do not impact the diversity of bees. 
 ```{r}
 # Create new table to analyze extreme heat
 
@@ -491,7 +491,7 @@ diversities_long <- diversities %>%
   pivot_longer(cols = -Category, names_to = "Type", values_to = "Value")
 
 ggplot(diversities_long, aes(x = Type, y = Value, fill = Type)) +
-  geom_bar(stat = "identity", show.legend = FALSE) +
+  geom_bar(stat = "identity", show.legend = FALSE, color = "black", alpha = 0.8) +
   ggtitle("Shannon Diversity by Storm") + 
   xlab("Storm Type") +
   ylab("Shannon Diversity") + 
@@ -583,10 +583,14 @@ plot_data$period <- factor(plot_data$period,
                            labels = c("Pre-Event", "Post-Event"))
 # Plot data
 ggplot(plot_data, aes(x = EVENT_TYPE, y = diversity, fill = period)) +
-  geom_col(position = "dodge") +
-  theme_minimal() +
-  labs(x = "Event Type", y = "Mean Shannon Diversity", fill = "Sampling Period", title = "Bee Diversity Before vs. After Storm Events") +
-  scale_fill_manual(values=c("#D71B60", "#05FE04"))
+  geom_col(position = "dodge",color = "black", alpha = 0.8) +
+  ggtitle("Distribution of Shuffled Heat Results + Line for Observed Statistic") + 
+  xlab("Event Type") + 
+  ylab("Mean Shannon Diversity") + 
+  theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5)) + 
+  #theme_minimal() +
+  #labs(x = "Event Type", y = "Mean Shannon Diversity", fill = "Sampling Period", title = "Bee Diversity Before vs. After Storm Events") +
+  scale_fill_manual(values=c("magenta", "green"))
 
 ```
 
@@ -696,14 +700,19 @@ structure_plot_data <- structure_summary %>%
 # make sure Pre shows up before Post
 structure_plot_data$period <- factor(structure_plot_data$period, levels = c("mean_pre_prop_spec", "mean_post_prop_spec"), labels = c("Pre-Event", "Post-Event"))
 
+structure_plot_data_filtered <- structure_plot_data %>%
+  filter(EVENT_TYPE != "Winter Storm")
+
 # 3. Grouped bar plot
-ggplot(structure_plot_data, aes(x = EVENT_TYPE, y = prop_spec, fill = period)) +
-  geom_col(position = "dodge") +
+ggplot(structure_plot_data_filtered, aes(x = EVENT_TYPE, y = prop_spec, fill = period)) +
+  geom_col(position = "dodge", color = "black", alpha = 0.8) +
   theme_minimal() +
-  labs(x = "Event Type", y = "Mean Proportion Specialists", fill = "Sampling Period",
-    title = "Bee Community Structure (Specialists vs Generalists) \nBefore and After Extreme Weather Events") +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1)) +
-  scale_fill_manual(values=c("#D71B60", "#05FE04"))
+  ggtitle("Bee Community Structure (Specialists vs Generalists) Before and After Extreme Weather Events") + 
+  xlab("Event Type") + 
+  ylab("Mean Proportion Specialists") + 
+  #labs(x = "Event Type", y = "Mean Proportion Specialists", fill = "Sampling Period")
+  theme(plot.title = element_text(size = 10, face = "bold", hjust = 0.5)) + 
+  scale_fill_manual(values=c("magenta", "green"))
 ```
 
 
