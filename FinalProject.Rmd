@@ -15,9 +15,6 @@ library(fuzzyjoin)
 library(lubridate)
 library(tidyverse)
 
-
-
-
 ```
 
 # Introduction 
@@ -111,15 +108,10 @@ OBA_dataset <- OBA_dataset %>%
 # Join Tables
 
 joined_data <- fuzzy_left_join(OBA_dataset, storm_dataset,
-  by = c(
-    "county" = "COUNTY",                        
-    "verbatimEventDate" = "BEGIN_DATE"             
-  ),
+  by = c("county" = "COUNTY",
+         "verbatimEventDate" = "BEGIN_DATE"), 
   match_fun = list(`==`, function(bee_date, storm_date) {
-    bee_date >= storm_date & bee_date <= storm_date + 30
-    }
-  )
-)
+    bee_date >= storm_date & bee_date <= storm_date + 30}))
 
 joined_data
 ```
@@ -148,7 +140,7 @@ joined_data <- joined_data %>%
 joined_data <- joined_data %>%
   filter(specificEpithet != " ")
 ```
-## Data Analysis - AB Test for Storm vs No Storm
+## Data Analysis & Hypothesis Testing - AB Test for Storm vs No Storm
 
 Before we do our AB test to determine whether extreme weather impacts bee diversity, we need to come up with a null hypothesis to either reject or not. Or null hypothesis will be: Bees are equally diverse, according to the shannon diversity index, in areas which have recently been impacted by either extreme heat or freezing temperatures. If we get a p value of less than 0.05, we will reject this null and assume that the weather does impact bees. 
 
@@ -377,9 +369,7 @@ ggplot(data.frame(x = shuffle_results), aes(x)) +
   geom_vline(xintercept = shannon_diversity(not_control_table, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
   ylab("Frequency") + 
-  theme(
-    plot.title = element_text(size = 10, face = "bold", hjust = 0.5)
-  )
+  theme(plot.title = element_text(size = 10, face = "bold", hjust = 0.5))
 
 ```
 As we can see, our observed statistic (Shannon diversity of storm bees) falls well outside of the limits of our shuffled results, meaning it is statistically significant.
@@ -433,9 +423,7 @@ ggplot(data.frame(x = shuffled_frost_results), aes(x)) +
   geom_vline(xintercept = shannon_diversity(joined_data_frost_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
   ylab("Frequency") +
-  theme(
-    plot.title = element_text(size = 13, face = "bold", hjust = 0.5)
-  )
+  theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5))
 
 
 ```
@@ -486,9 +474,7 @@ ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
   geom_vline(xintercept = shannon_diversity(joined_data_heat_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
   ylab("Frequency") + 
-  theme(
-    plot.title = element_text(size = 13, face = "bold", hjust = 0.5)
-  )
+  theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5))
 
 ```
 Once again, we reject the Null hypothesis. We also see based on the difference in shannon diversities, that heat actually has more impact on the diversity than the extreme cold!
@@ -516,13 +502,13 @@ ggplot(diversities_long, aes(x = Type, y = Value, fill = Type)) +
 
 ```
 
+# Visualizations
 
+The following figures show how diversity and community structure are affected by the sampled extreme weather events. 
 
+## Effect on Shannon diversity
 
-
-
-
-
+To visualize how diversity is affected by the sampled weather events we first had to find the dates of our sampled weather events. Once dates of events were found we used a for loop to subset the data to samples within 30 day windows before and after events and then apply a Shannon diversity function to the subsetted data to give us a data frame that listed Shannon diversity values before and after events. For ease of visualization, we took the mean of these diversity values per event type and plotted them on a bar chart. We chose a bar plot because it's the clearest way to compare diversity values before and after events by event type. Visualization shows that there is a noticeable difference in Shannon diversity before and after events with lower values following extreme heat and cold events. This indicates that extreme weather events lead to a decrease in bee diversity across Oregon following these events.
 
 ```{r}
 # Find dates of events
@@ -566,9 +552,9 @@ for (i in 1:n_events) {
 ```{r}
 # Comparison Table
 diversity_results <- data.frame(EVENT_DATE = Event_Date_Data$BEGIN_DATE,
-                                EVENT_TYPE      = Event_Date_Data$EVENT_TYPE,
-                                shannon_pre30   = pre_div,
-                                shannon_post30  = post_div,
+                                EVENT_TYPE = Event_Date_Data$EVENT_TYPE,
+                                shannon_pre30 = pre_div,
+                                shannon_post30 = post_div,
                                 diff_post_minus_pre = post_div - pre_div)
 
 diversity_results
@@ -604,13 +590,12 @@ ggplot(plot_data, aes(x = EVENT_TYPE, y = diversity, fill = period)) +
 
 ```
 
-Bees were classified as specialists or generalists using genus-level traits derived from established ecological references (Michener 2000; Wilson & Carril 2015; Danforth et al. 2019). Genera with strong evidence of specialization (e.g., Diadasia, Peponapis, Perdita, Chelostoma, Dufourea) were categorized as specialists based on confirmed associations documented by Fowler & Droege (2020) and Praz et al. (2018) and genera (e.g., Bombus, Lasioglossum, Halictus) were categorized as generalists through documentations by Wilson & Carril (2015) and Goulson (2010). Bee identities were additionally cross-referenced with the USGS Native Bee Inventory dataset (Fowler & Droege 2020), which is a widely used North American bee monitoring program. Genera were only assigned to specialist or generalist categories when consistent agreement existed in the literature; ambiguous genera were excluded from assignment.
+## Effect on community structure
+
+To compare community structure before and after extreme weather events bees were classified as specialists or generalists using genus-level traits derived from established ecological references (Michener 2000; Wilson & Carril 2015; Danforth et al. 2019). Genera with strong evidence of specialization (e.g., Diadasia, Peponapis, Perdita, Chelostoma, Dufourea) were categorized as specialists based on confirmed associations documented by Fowler & Droege (2020) and Praz et al. (2018) and genera (e.g., Bombus, Lasioglossum, Halictus) were categorized as generalists through documentations by Wilson & Carril (2015) and Goulson (2010). Bee identities were additionally cross-referenced with the USGS Native Bee Inventory dataset (Fowler & Droege 2020), which is a widely used North American bee monitoring program. Genera were only assigned to specialist or generalist categories when consistent agreement existed in the literature. Ambiguous genera were excluded from assignment to avoid confusion or bias in the data. We decided to use genera instead of species-specific traits due to time constraints, complexity, and dissagreement in the literature. Once genera were categorized we created a new data table and used a for loop to subset the data for bee samples within 30 day windows before and after events, count the number of samples for each genera, and then find the overall proportions relative to specialists for ease of plotting. Once this was completed we summarized the data by event type and plotted the data in a bar chart. The bar chart shows that there is a  shift in community structure towards generalist genera which indicates that extreme weather events cause a noticeable difference in community structure with specialist genera not able to survive as well as generalist species after these events. 
 
 ```{r}
 # Create object vectors for Genera dependent on if they are specialists or generalists. Genera that have species that are both are excluded for clarity
-# Remove whitespace
-
-joined_data$genus <- trimws(sub(" .*", "", joined_data$species))
 
 specialist_genera <- c("Diadasia", "Peponapis", "Hesperapis", "Dufourea", "Chelostoma", "Perdita", "Colletes", "Melissodes")
 
@@ -717,24 +702,50 @@ ggplot(structure_plot_data, aes(x = EVENT_TYPE, y = prop_spec, fill = period)) +
   theme_minimal() +
   labs(x = "Event Type", y = "Mean Proportion Specialists", fill = "Sampling Period",
     title = "Bee Community Structure (Specialists vs Generalists) \nBefore and After Extreme Weather Events") +
-  theme(axis.text.x = element_text(angle = 20, hjust = 1))
+  theme(axis.text.x = element_text(angle = 20, hjust = 1)) +
+  scale_fill_manual(values=c("#D71B60", "#05FE04"))
 ```
 
 
 
-# Results
+# Conclusion
+Our analysis reveals 
 
 
 # References (Temporary spot. Needs to be changed to BibTex)
 
-Bilton, D. T., McGill, R. A. R., & Parker, D. J. (2019). Extreme events drive range contraction in a cold-adapted species. Global Change Biology, 25(11), 3576–3587.
-Franzén, M., & Öckinger, E. (2012). Climate-driven changes in pollinator communities: The return of the dark side of cold winters. Oikos, 121(3), 437–442.
-Goulson, D., Nicholls, E., Botías, C., & Rotheray, E. L. (2015). Bee declines driven by combined stress from parasites, pesticides, and lack of flowers. Science, 347(6229), 1255957.
+Bilton, D. T., McGill, R. A. R., & Parker, D. J. (2019). Extreme events drive range contraction in a cold-adapted species. Global Change Biology, 25(11), 3576–3587. https://doi.org/10.1111/gcb.14738
+
+Danforth, B. N., Minckley, R. L., Neff, J. L., & Fawcett, F. (2019). The solitary bees: Biology, evolution, conservation. Princeton University Press.
+
+Fowler, J., & Droege, S. (2020). Specialist bees of North America and their pollen hosts. United States Geological Survey.
+
+Franzén, M., & Öckinger, E. (2012). Climate-driven changes in pollinator communities: The return of the dark side of cold winters. Oikos, 121(3), 437–442. https://doi.org/10.1111/j.1600-0706.2011.19914.x
+
+Goulson, D. (2010). Bumblebees: Behaviour, ecology, and conservation. Oxford University Press.
+
+Goulson, D., Nicholls, E., Botías, C., & Rotheray, E. L. (2015). Bee declines driven by combined stress from parasites, pesticides, and lack of flowers. Science, 347(6229), 1255957. https://doi.org/10.1126/science.1255957
+
 Heinrich, B. (1979). Bumblebee economics. Harvard University Press.
-IPCC. (2021). Climate change 2021: The physical science basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change. Cambridge University Press.
+
+Intergovernmental Panel on Climate Change (IPCC). (2021). Climate change 2021: The physical science basis. Contribution of Working Group I to the Sixth Assessment Report of the Intergovernmental Panel on Climate Change. Cambridge University Press.
+
+Michener, C. D. (2000). The bees of the world. Johns Hopkins University Press.
+
 Oregon Climate Change Research Institute (OCCRI). (2023). The Fifth Oregon Climate Assessment. Oregon State University.
-Pereboom, J. J., & Biesmeijer, J. C. (2003). Thermal constraints for stingless bee foragers: The importance of body size and coloration. Oecologia, 137(1), 42–50.
+
+Pereboom, J. J., & Biesmeijer, J. C. (2003). Thermal constraints for stingless bee foragers: The importance of body size and coloration. Oecologia, 137(1), 42–50. https://doi.org/10.1007/s00442-003-1333-6
+
 Potts, S. G., Imperatriz-Fonseca, V., Ngo, H. T., et al. (2016). The assessment report of the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services (IPBES) on pollinators, pollination, and food production. IPBES Secretariat.
-Riley, D. G., Browning, L. E., & Withrow, J. R. (2018). Ice storms, overwintering survival, and pollinator decline: Evidence from temperate ecosystems. Ecology Letters, 21(4), 650–659.
-Thornton, P. K., Whitfield, S., & Challinor, A. J. (2023). Climate extremes and their implications for global food systems. Annual Review of Environment and Resources, 48, 203–229.
-Woods, H. A., Dillon, M. E., & Pincebourde, S. (2019). The roles of microclimatic diversity and of behavior in mediating the responses of ectotherms to climate change. Journal of Thermal Biology, 84, 80–92.
+
+Praz, C. J., Müller, A., & Dorn, S. (2018). Host-plant specialization in solitary bees: A case for polylecty evolution. Biological Reviews, 93(4), 1693–1716. https://doi.org/10.1111/brv.12414
+
+Riley, D. G., Browning, L. E., & Withrow, J. R. (2018). Ice storms, overwintering survival, and pollinator decline: Evidence from temperate ecosystems. Ecology Letters, 21(4), 650–659. https://doi.org/10.1111/ele.12936
+
+Russo, L. (2016). Positive and negative impacts of non-native bees on native ecosystems. Annual Review of Entomology, 61, 13–31. https://doi.org/10.1146/annurev-ento-010715-023719
+
+Thornton, P. K., Whitfield, S., & Challinor, A. J. (2023). Climate extremes and their implications for global food systems. Annual Review of Environment and Resources, 48, 203–229. https://doi.org/10.1146/annurev-environ-120120-021013
+
+Wilson, J. S., & Carril, O. M. (2015). The bees in your backyard: A guide to North America’s bees. Princeton University Press.
+
+Woods, H. A., Dillon, M. E., & Pincebourde, S. (2019). The roles of microclimatic diversity and of behavior in mediating the responses of ectotherms to climate change. Journal of Thermal Biology, 84, 80–92. https://doi.org/10.1016/j.jtherbio.2019.06.003
