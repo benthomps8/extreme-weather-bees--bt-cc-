@@ -588,12 +588,12 @@ plot_data$period <- factor(plot_data$period,
 # Plot data
 ggplot(plot_data, aes(x = EVENT_TYPE, y = diversity, fill = period)) +
   geom_col(position = "dodge",color = "black", alpha = 0.8) +
-  ggtitle("Distribution of Shuffled Heat Results + Line for Observed Statistic") + 
+  ggtitle("Bee Diversity Before vs. After Storm Events") + 
   xlab("Event Type") + 
   ylab("Mean Shannon Diversity") + 
   theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5)) + 
   #theme_minimal() +
-  #labs(x = "Event Type", y = "Mean Shannon Diversity", fill = "Sampling Period", title = "Bee Diversity Before vs. After Storm Events") +
+  labs(fill = "Sampling Period") +
   scale_fill_manual(values=c("magenta", "green"))
 
 ```
@@ -714,7 +714,7 @@ ggplot(structure_plot_data_filtered, aes(x = EVENT_TYPE, y = prop_spec, fill = p
   ggtitle("Bee Community Structure (Specialists vs Generalists) Before and After Extreme Weather Events") + 
   xlab("Event Type") + 
   ylab("Mean Proportion Specialists") + 
-  #labs(x = "Event Type", y = "Mean Proportion Specialists", fill = "Sampling Period")
+  labs(fill = "Sampling Period") +
   theme(plot.title = element_text(size = 10, face = "bold", hjust = 0.5)) + 
   scale_fill_manual(values=c("magenta", "green"))
 ```
