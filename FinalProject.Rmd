@@ -740,9 +740,13 @@ ggplot(structure_plot_data_filtered, aes(x = EVENT_TYPE, y = prop_spec, fill = p
 # Calculate Percentage Decrease in Specialist Proportion After Freezing Temperatures
 ((structure_plot_data_filtered$prop_spec[3] - structure_plot_data_filtered$prop_spec[4]) / structure_plot_data_filtered$prop_spec[3]) * 100
 ```
+# Limitations / Potential Problems
+Our storm data only had around 600 instances, and some counties were not represented at all, such as Baker, Umatilla, and Coos. So when we analyze diversity among bees after storms, the lack of diversity in location may actually impact our diversity in bee community. Additionally, our storm data is not all-encompassing. There were only 600 instances of combined freezing temperatures and heat (over 100 degrees F). This is obviously not all instances of extreme temperatures recorded, so our data is not taking into account all instances of extreme temperature. 
 
 
 # Conclusion
+
+
 Our analysis reveals 
 
 
