@@ -325,17 +325,22 @@ n_iterations <- 1000
 # Perform AB Testing
 
 shuffle_results <- c()
+joined_data_filtered_true <- joined_data %>%
+  filter(Control == TRUE)
+joined_data_filtered_false <- joined_data %>%
+  filter(Control == FALSE)
+
 
 for (i in 1:n_iterations) {
-  shuffled_col <- sample(joined_data$Control)
-  shuffled <- joined_data %>%
-    mutate(shuffled_control = shuffled_col)
-  shuffled_treatment <- shuffled %>%
-    filter(shuffled_control == FALSE)
-  
-  
-  shuffle_results[i] <- shannon_diversity(shuffled_treatment, specificEpithet)
+  joined_data_sampled <- joined_data %>%
+    mutate(shuffled = sample(Control))
+  temp <- joined_data_sampled %>%
+    filter(shuffled == TRUE)
+  temp2 <- joined_data_sampled %>%
+    filter(shuffled == FALSE)
+  shuffle_results[i] <- shannon_diversity(temp, specificEpithet) - shannon_diversity(temp2, specificEpithet)
 }
+
 
 sort(shuffle_results)
 
@@ -360,7 +365,7 @@ ggplot(data.frame(x = shuffle_results), aes(x)) +
   xlab("Shuffled Shannon Diversity Values") +
   ylab("Frequency")
 
-
+shannon_diversity(joined_data_filtered_true, specificEpithet) - shannon_diversity(joined_data_filtered_false, specificEpithet)
 ```
 
 ```{r}
@@ -368,7 +373,7 @@ ggplot(data.frame(x = shuffle_results), aes(x)) +
 ggplot(data.frame(x = shuffle_results), aes(x)) +
   geom_histogram(fill = "#1E90FF", color = "black", alpha = 0.8, binwidth = 0.009) +
   ggtitle("Distribution of Shuffled AB Test Shannon Diversities + Line for Observed Statistic") + 
-  geom_vline(xintercept = shannon_diversity(not_control_table, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
+  geom_vline(xintercept = -(shannon_diversity(joined_data_filtered_true, specificEpithet) - shannon_diversity(joined_data_filtered_false, specificEpithet)), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
   ylab("Frequency") + 
   theme(plot.title = element_text(size = 10, face = "bold", hjust = 0.5))
@@ -390,9 +395,11 @@ joined_data_frost
 
 ```{r}
 # Calculate Observed Statistic
-joined_data_frost_filtered <- joined_data_frost %>%
+joined_data_frost_filtered_true <- joined_data_frost %>%
   filter(frost == TRUE)
-shannon_diversity(joined_data_frost_filtered, specificEpithet)
+joined_data_frost_filtered_false <- joined_data_frost %>%
+  filter(frost == FALSE)
+shannon_diversity(joined_data_frost_filtered_true, specificEpithet) - shannon_diversity(joined_data_frost_filtered_false, specificEpithet)
 ```
 
 
@@ -404,7 +411,9 @@ for (i in 1:n_iterations) {
     mutate(frost_shuffled = sample(frost))
   temp <- joined_data_frost %>%
     filter(frost_shuffled == TRUE)
-  shuffled_frost_results[i] <- shannon_diversity(temp, specificEpithet)
+  temp2 <- joined_data_frost %>%
+    filter(frost_shuffled == FALSE)
+  shuffled_frost_results[i] <- shannon_diversity(temp, specificEpithet) - shannon_diversity(temp2, specificEpithet)
 }
 
 sort(shuffled_frost_results)
@@ -413,7 +422,7 @@ sort(shuffled_frost_results)
 
 ```{r}
 # Compute P Value for freezing temperatures
-p_value_frost <- mean(shuffled_frost_results <= shannon_diversity(joined_data_frost_filtered, specificEpithet))
+p_value_frost <- mean(shuffled_frost_results <= shannon_diversity(joined_data_frost_filtered_true, specificEpithet) - shannon_diversity(joined_data_frost_filtered_false, specificEpithet))
 p_value_frost
 ```
 
@@ -422,7 +431,7 @@ p_value_frost
 ggplot(data.frame(x = shuffled_frost_results), aes(x)) +
   geom_histogram(fill = "skyblue", color = "black", alpha = 0.8, binwidth = 0.009) +
   ggtitle("Distribution of Shuffled Frost Results + Line for Observed Statistic") + 
-  geom_vline(xintercept = shannon_diversity(joined_data_frost_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
+  geom_vline(xintercept = shannon_diversity(joined_data_frost_filtered_true, specificEpithet) - shannon_diversity(joined_data_frost_filtered_false, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
   ylab("Frequency") +
   theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5))
@@ -430,6 +439,8 @@ ggplot(data.frame(x = shuffled_frost_results), aes(x)) +
 
 ```
 As we see here, the p value is once again 0. This means that we reject the null, and that freezing temperatures does negatively impace the shannon diversity of bees.
+
+
 
 ## Data Analysis - AB Test for Extreme Heat
 For our last AB test, we will look at whether or not extreme heat impacts bee diversity. Our null hypothesis: Extreme heat events do not impact the diversity of bees. 
@@ -443,21 +454,25 @@ joined_data_heat
 
 ```{r}
 # Calculate Observed Statistic
-joined_data_heat_filtered <- joined_data_heat %>%
+joined_data_heat_filtered_true <- joined_data_heat %>%
   filter(heat == TRUE)
-shannon_diversity(joined_data_heat_filtered, specificEpithet)
+joined_data_heat_filtered_false <- joined_data_heat %>%
+  filter(heat == FALSE)
+shannon_diversity(joined_data_heat_filtered_true, specificEpithet) - shannon_diversity(joined_data_heat_filtered_false, specificEpithet)
 
 ```
 
 ```{r}
 # Perform AB Test
 shuffled_heat_results <- c()
-for (i in 1:1000) {
-  joined_data_heat <- joined_data_heat %>%
+for (i in 1:n_iterations) {
+  joined_data_heat_temp <- joined_data_heat %>%
     mutate(heat_shuffled = sample(heat))
-  temp <- joined_data_heat %>%
+  temp <- joined_data_heat_temp %>%
     filter(heat_shuffled == TRUE)
-  shuffled_heat_results[i] <- shannon_diversity(temp, specificEpithet)
+  temp2 <- joined_data_heat_temp %>%
+    filter(heat_shuffled == FALSE)
+  shuffled_heat_results[i] <- shannon_diversity(temp, specificEpithet) - shannon_diversity(temp2, specificEpithet)
 }
 
 sort(shuffled_heat_results)
@@ -465,7 +480,7 @@ sort(shuffled_heat_results)
 ```
 
 ```{r}
-p_value_heat <- mean(shuffled_heat_results <= shannon_diversity(joined_data_heat_filtered, specificEpithet))
+p_value_heat <- mean(shuffled_heat_results <= shannon_diversity(joined_data_heat_filtered_true, specificEpithet) - shannon_diversity(joined_data_heat_filtered_false, specificEpithet))
 p_value_heat
 
 ```
@@ -473,7 +488,7 @@ p_value_heat
 ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
   geom_histogram(fill = "orange", color = "black", alpha = 0.8, binwidth = 0.009) +
   ggtitle("Distribution of Shuffled Heat Results + Line for Observed Statistic") + 
-  geom_vline(xintercept = shannon_diversity(joined_data_heat_filtered, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
+  geom_vline(xintercept = shannon_diversity(joined_data_heat_filtered_true, specificEpithet) - shannon_diversity(joined_data_heat_filtered_false, specificEpithet), color = "red", linetype = "dashed", size = 1) + 
   xlab("Shuffled Shannon Diversity Values") +
   ylab("Frequency") + 
   theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5))
