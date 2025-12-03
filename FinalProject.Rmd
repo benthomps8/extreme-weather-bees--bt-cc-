@@ -32,7 +32,7 @@ The purpose of our study is to measure how specific extreme weather events influ
 
 OBA_dataset <- read.csv("OBA_2018-2024.csv")
 
-OBA_dataset
+#OBA_dataset
 ```
 
 ```{r}
@@ -40,7 +40,7 @@ OBA_dataset
 
 storm_dataset <- read.csv("storm_data.csv")
 
-storm_dataset
+#storm_dataset
 ```
 
 # Data Wrangling/Exploration
@@ -50,7 +50,7 @@ storm_dataset
 OBA_dataset <- OBA_dataset %>%
   mutate(GenusSpecies = paste(genus, specificEpithet))
 
-OBA_dataset
+#OBA_dataset
 ```
 
 ```{r}
@@ -92,7 +92,7 @@ storm_dataset_cols_to_drop <- c(
 
 storm_dataset <- storm_dataset[, !(names(storm_dataset) %in% storm_dataset_cols_to_drop)]
 
-storm_dataset
+#storm_dataset
 ```
 
 ```{r}
@@ -104,7 +104,7 @@ storm_dataset <- storm_dataset %>%
 OBA_dataset <- OBA_dataset %>%
   mutate(verbatimEventDate = mdy(verbatimEventDate))
 
-OBA_dataset
+#OBA_dataset
 ```
 
 ```{r}
@@ -116,7 +116,7 @@ joined_data <- fuzzy_left_join(OBA_dataset, storm_dataset,
   match_fun = list(`==`, function(bee_date, storm_date) {
     bee_date >= storm_date & bee_date <= storm_date + 30}))
 
-joined_data
+#joined_data
 ```
 
 ```{r}
@@ -124,7 +124,7 @@ joined_data
 
 joined_data %>%
   count(EVENT_TYPE)
-joined_data
+#joined_data
 ```
 
 
@@ -132,7 +132,7 @@ joined_data
 # Add Control column. True if control data, false if a storm instance
 joined_data <- joined_data %>%
   mutate(Control = is.na(EVENT_TYPE))
-joined_data
+#joined_data
 ```
 
 
@@ -156,7 +156,7 @@ S
 
 
 ```{r}
-# Natural Log of Species Richness 
+# Natural Log of Species Richness (Necessary for Species evenness, but not Shannon Diversity)
 ln_s <- log(S)
 ln_s
 ```
@@ -240,10 +240,6 @@ shannon_diversity_index_control
 ```
 
 
-```{r}
-
-
-```
 
 
 ```{r}
@@ -275,6 +271,8 @@ for (p in proportions_not_control) {
 shannon_diversity_index_treatment <- (summation_not_control * -1)
 
 shannon_diversity_index_treatment
+
+
 ```
 ```{r}
 # Create function to compute Shannon Diversity (reproducible)
@@ -719,6 +717,14 @@ ggplot(structure_plot_data_filtered, aes(x = EVENT_TYPE, y = prop_spec, fill = p
   scale_fill_manual(values=c("magenta", "green"))
 ```
 
+```{r}
+# Calculate Percentage Decrease in Specialist Proportion After Heat
+((structure_plot_data_filtered$prop_spec[1] - structure_plot_data_filtered$prop_spec[2]) / structure_plot_data_filtered$prop_spec[1]) * 100
+```
+```{r}
+# Calculate Percentage Decrease in Specialist Proportion After Freezing Temperatures
+((structure_plot_data_filtered$prop_spec[3] - structure_plot_data_filtered$prop_spec[4]) / structure_plot_data_filtered$prop_spec[3]) * 100
+```
 
 
 # Conclusion
