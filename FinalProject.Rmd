@@ -780,7 +780,13 @@ ggplot(structure_plot_data_filtered, aes(x = EVENT_TYPE, y = prop_spec, fill = p
 ((structure_plot_data_filtered$prop_spec[3] - structure_plot_data_filtered$prop_spec[4]) / structure_plot_data_filtered$prop_spec[3]) * 100
 ```
 # Limitations / Potential Problems
-Our storm data only had around 600 instances, and some counties were not represented at all, such as Baker, Umatilla, and Coos. So when we analyze diversity among bees after storms, the lack of diversity in location may actually impact our diversity in bee community. Additionally, our storm data is not all-encompassing. There were only 600 instances of combined freezing temperatures and heat (over 100 degrees F). This is obviously not all instances of extreme temperatures recorded, so our data is not taking into account all instances of extreme temperature. 
+Our storm data only had around 600 instances, and some counties were not represented at all, such as Baker, Umatilla, and Coos. So when we analyze diversity among bees after storms, the lack of diversity in location may actually impact our diversity in bee community. Additionally, our storm data is not all-encompassing. There were only 600 instances of combined freezing temperatures and heat (over 100 degrees F). This is obviously not all instances of extreme temperatures recorded, so our data is not taking into account all instances of extreme temperature. The discrepency found between counties with bee records and storms is obvious if you look at the ArcGIS Pro layout found in the repo.
+
+After speaking with Dr. Lincoln Bartlett, one of the researchers in charge of maintaining the Oregon Bee Atlas data, we learned that the Shannon Diversity index is not typically very strong at calculating diversities over such a large dataset. With so many bees in the data, the diversity is not great because the values will almost always be very large (between 4 and 5) and therefore it will be harder to find diversities that small in subsets of it like the storms. This is likely why our P values were all 0.
+
+Because the NOAA data does not contain specific locations (xy coordinates) we were not able to compute where and when exactly temperature events occurred. For example, county regions are very large, and climate may be much different at the norhtern tip of a country than the southern tip. Perhaps certain bees we recorded as "storm bees" were not actually storm bees because they were in a seperate part of the county. 
+
+With bees collected by hand in the field, it is natural that extreme weather events would impact the number of people going out into the field to collect data. Perhaps bees do not actually get impacted by small term weather events, but the collection is impacted because nobody wants to go out in the field in the middle of a hot summer or a freezing winter. 
 
 
 # Conclusion
