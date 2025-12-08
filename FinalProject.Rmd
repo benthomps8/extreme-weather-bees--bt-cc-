@@ -176,6 +176,8 @@ joined_data <- joined_data %>%
 
 Before we do our AB test to determine whether extreme weather impacts bee diversity, we need to come up with a null hypothesis to either reject or not. Or null hypothesis will be: Bees are equally diverse, according to the shannon diversity index, in areas which have recently been impacted by either extreme heat or freezing temperatures. If we get a p value of less than 0.05, we will reject this null and assume that the weather does impact bees. 
 
+To do our analysis, we will create a function to compute Shannon Diversity, then find our observed statistic for shannon diversity of bees collected after certain extreme weather events. Our actual observed statistic will be the difference in Shannon Diversites between bees collected outside of the storm timeframe (30 days) and bees collected within 30 days of a storm. After that, we will collect some arbitrary number (n_iter = 1000) to iterate through. In each iteration, we will shuffle the control column and re-compute the differences. Then we will see if our observed statistic falls within ght 95% range of the sampled statistics. 
+
 ```{r}
 # Find Species Richness
 S <- length(unique(joined_data$specificEpithet))
@@ -204,7 +206,7 @@ for (i in species_counts$n) {
   proportions[j] = (i / sum(species_counts$n))
   j <- j+1
 }
-proportions
+#proportions
 
 ```
 
@@ -222,6 +224,7 @@ shannon_diversity_index <- (summation * -1)
 
 ```
 
+We found out there is already a package to compute shannon diversity, but we will still create a reproducible function to compute it as well so that we understand better how it runs. However, we will still test it here to make sure our numbers line up.
 
 ```{r}
 # Calculate Shannon Diversity Index Another Way
@@ -275,6 +278,8 @@ shannon_diversity_index_control
 joined_data
 not_control_table <- joined_data %>%
   filter(Control == FALSE)
+control_table <- joined_data %>%
+  filter(Control == TRUE)
 
 S_not_control <- length(unique(not_control_table$specificEpithet))
 
@@ -376,9 +381,9 @@ sort(shuffle_results)
 ```
 
 ```{r}
-# Assign P Value (Probability that our observed shannon diversiy for storm bees is at least that small if Null were true)
+# Assign P Value (Probability that our observed shannon diversity difference between storm/no storm for bees is at least that small if Null were true)
 
-p_value <- mean(shuffle_results <= shannon_diversity(not_control_table, specificEpithet))
+p_value <- mean(shuffle_results <= shannon_diversity(not_control_table, specificEpithet) - shannon_diversity(control_table, specificEpithet))
 p_value
 ```
 A P value of 0 means that we reject the null hypothesis. This means that the extreme weather events do impact bee diversity, making the bees less diverse in areas that recently experienced either extreme heat or freezing temperatures. 
@@ -411,7 +416,7 @@ As we can see, our observed statistic (Shannon diversity of storm bees) falls we
 
 ## Data Analysis: Does freezing temperatures impact bee diversity?
 
-Now, we want to do another AB test, but this time just to see if frost/freeze impacts bee diversity (ignoring extreme heat). Ou rnull hypothesis this time will be: Freezing temperatures do not impact bee diversity according to the Shannon diversity index. 
+Now, we want to do another AB test, but this time just to see if frost/freeze impacts bee diversity (ignoring extreme heat). Our null hypothesis this time will be: Freezing temperatures do not impact bee diversity according to the Shannon diversity index. 
 
 ```{r}
 # Create new table to analyze freezing temperatures
@@ -508,11 +513,13 @@ sort(shuffled_heat_results)
 ```
 
 ```{r}
+# Compute P Value for Shannon Diversity of Heat Bees
 p_value_heat <- mean(shuffled_heat_results <= shannon_diversity(joined_data_heat_filtered_true, specificEpithet) - shannon_diversity(joined_data_heat_filtered_false, specificEpithet))
 p_value_heat
 
 ```
 ```{r}
+# Histogram for Sampled Heat Shannon Diversity Differences
 ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
   geom_histogram(fill = "orange", color = "black", alpha = 0.8, binwidth = 0.009) +
   ggtitle("Distribution of Shuffled Heat Results + Line for Observed Statistic") + 
@@ -667,14 +674,22 @@ structure_table <- joined_data %>%
   select(BEGIN_DATE, EVENT_TYPE) %>%
   distinct()
 n_events_s <- nrow(structure_table)
-# Empty vectors to store results
+
+```
+
+```{r}
+# Create Vectors to store info from for loop
 pre_spec        <- numeric(n_events)
 pre_gen         <- numeric(n_events)
 post_spec       <- numeric(n_events)
 post_gen        <- numeric(n_events)
 pre_prop_spec   <- numeric(n_events)
 post_prop_spec  <- numeric(n_events)
-# Create for loop to calculate community structure 
+```
+
+```{r}
+# For loop to find proportions of generalist vs specialist bees and how extreme weather affected them
+
 for (i in 1:n_events_s) {
   
   event_day <- structure_table$BEGIN_DATE[i]
@@ -691,13 +706,11 @@ for (i in 1:n_events_s) {
            verbatimEventDate <= event_day + 30) %>%
     filter(genus %in% c(specialist_genera, generalist_genera))
   
-  # Counts
   pre_spec[i]  <- sum(pre_bees$genus %in% specialist_genera)
   pre_gen[i]   <- sum(pre_bees$genus %in% generalist_genera)
   post_spec[i] <- sum(post_bees$genus %in% specialist_genera)
   post_gen[i]  <- sum(post_bees$genus %in% generalist_genera)
-  
-  # Find proportions
+
   pre_total  <- pre_spec[i]  + pre_gen[i]
   post_total <- post_spec[i] + post_gen[i]
   
@@ -714,6 +727,7 @@ for (i in 1:n_events_s) {
   }
 }
 ```
+
 
 ```{r}
 # Comparison table
@@ -738,17 +752,14 @@ structure_summary <- structure_results %>%
   summarise(mean_pre_prop_spec  = mean(pre_prop_spec,  na.rm = TRUE),
     mean_post_prop_spec = mean(post_prop_spec, na.rm = TRUE))
 
-# 2. Change format for ease of plotting
 structure_plot_data <- structure_summary %>%
   pivot_longer(cols = c(mean_pre_prop_spec, mean_post_prop_spec), names_to = "period", values_to = "prop_spec")
 
-# make sure Pre shows up before Post
 structure_plot_data$period <- factor(structure_plot_data$period, levels = c("mean_pre_prop_spec", "mean_post_prop_spec"), labels = c("Pre-Event", "Post-Event"))
 
 structure_plot_data_filtered <- structure_plot_data %>%
   filter(EVENT_TYPE != "Winter Storm")
 
-# 3. Grouped bar plot
 ggplot(structure_plot_data_filtered, aes(x = EVENT_TYPE, y = prop_spec, fill = period)) +
   geom_col(position = "dodge", color = "black", alpha = 0.8) +
   theme_minimal() +
