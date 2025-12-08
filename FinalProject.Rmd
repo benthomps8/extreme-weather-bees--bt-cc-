@@ -784,7 +784,7 @@ Our storm data only had around 600 instances, and some counties were not represe
 
 After speaking with Dr. Lincoln Bartlett, one of the researchers in charge of maintaining the Oregon Bee Atlas data, we learned that the Shannon Diversity index is not typically very strong at calculating diversities over such a large dataset. With so many bees in the data, the diversity is not great because the values will almost always be very large (between 4 and 5) and therefore it will be harder to find diversities that small in subsets of it like the storms. This is likely why our P values were all 0.
 
-Because the NOAA data does not contain specific locations (xy coordinates) we were not able to compute where and when exactly temperature events occurred. For example, county regions are very large, and climate may be much different at the norhtern tip of a country than the southern tip. Perhaps certain bees we recorded as "storm bees" were not actually storm bees because they were in a seperate part of the county. 
+Because the NOAA data does not contain specific locations (xy coordinates) we were not able to compute where and when exactly temperature events occurred. For example, county regions are very large, and climate may be much different at the northern tip of a country than the southern tip. Perhaps certain bees we recorded as "storm bees" were not actually storm bees because they were in a separate part of the county. 
 
 With bees collected by hand in the field, it is natural that extreme weather events would impact the number of people going out into the field to collect data. Perhaps bees do not actually get impacted by small term weather events, but the collection is impacted because nobody wants to go out in the field in the middle of a hot summer or a freezing winter. 
 
@@ -792,7 +792,7 @@ With bees collected by hand in the field, it is natural that extreme weather eve
 # Conclusion
 
 
-Our analysis reveals 
+Our analysis reveals evidence that extreme temperatures in either direction do lead to bees being both less diverse, and to become more specialized. We concluded that, with P=0 confidence, that bee communities are less diverse according to the Shannon diversity index after extreme temperature events. However, because of dataset limitations and external factors surrounding the hand-collected data, we can not be certain of any conclusions. More analysis, with higher resolution temperature data, would be needed to draw any conclusions.
 
 
 # References (Temporary spot. Needs to be changed to BibTex)
