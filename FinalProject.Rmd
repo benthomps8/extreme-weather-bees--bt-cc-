@@ -532,7 +532,7 @@ ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
 Once again, we reject the Null hypothesis. This suggests that extreme heat has a significant impact on bee diversity. If you compare the difference extreme heat and cold AB for Shannon diversities, heat appears to have a greater impact on diversity than extreme cold!
 
 ```{r}
-
+# Code for a graph comparing heat / cold (see graph below)
 diversities <- data.frame(
   Category = c("Storm"),
   Frost = shannon_diversity(joined_data_frost_filtered, specificEpithet),
@@ -542,15 +542,6 @@ diversities <- data.frame(
 
 diversities_long <- diversities %>%
   pivot_longer(cols = -Category, names_to = "Type", values_to = "Value")
-
-ggplot(diversities_long, aes(x = Type, y = Value, fill = Type)) +
-  geom_bar(stat = "identity", show.legend = FALSE, color = "black", alpha = 0.8) +
-  ggtitle("Shannon Diversity by Storm") + 
-  xlab("Storm Type") +
-  ylab("Shannon Diversity") + 
-  theme(plot.title = element_text(size = 13, face = "bold", hjust = 0.5)) +
-  scale_fill_manual(values = c("Frost" = "blue", "Heat" = "orange", "No Storm" = "grey")) 
-
 
 
 ```
