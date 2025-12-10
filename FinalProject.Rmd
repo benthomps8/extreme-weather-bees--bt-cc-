@@ -780,37 +780,3 @@ Overall, our findings show that continued monitoring of bee communities after ex
 
 
 # References
-
-Danforth, B. N., Minckley, R. L., Neff, J. L., & Fawcett, F. (2019). The solitary bees: Biology, evolution, conservation. Princeton University Press.
-
-Fowler, J. (2016). Specialist Bees of the Northeast: Host Plants and Habitat Conservation. Northeastern Naturalist, 23(2), 305–320. https://doi.org/10.1656/045.023.0210
-
-Franzén, M., & Öckinger, E. (2012). Climate-driven changes in pollinator communities: The return of the dark side of cold winters. Journal of Insect Conservation, 16(2), 215–222. https://doi.org/10.1007/s10841-011-9410-y
-
-Goulson, D. (2010). Bumblebees: Behaviour, ecology, and conservation. Oxford University Press.
-
-Goulson, D., Nicholls, E., Botías, C., & Rotheray, E. L. (2015). Bee declines driven by combined stress from parasites, pesticides, and lack of flowers. Science, 347(6229), 1255957. https://doi.org/10.1126/science.1255957
-
-Heinrich, B. (1979). Bumblebee economics. Harvard University Press.
-
-Intergovernmental Panel on Climate Change. (IPCC) (2021). Climate change 2021: The physical science basis (V. Masson-Delmotte, P. Zhai, A. Pirani, et al., Eds.). Cambridge University Press. https://doi.org/10.1017/9781009157896
-
-Michener, C. D. (2000). The bees of the world. Johns Hopkins University Press.
-
-Mishra, M., Bhunia, P., Shubham, S., Sen, R., Bhunia, R., Gulia, J., Mondal, T., Zidane, Z., Saha, T., Chacko, A., Raj, R., Vyshak, S. S., & Kaushal, L. (2023). The impact of weather change on honey bee populations and disease. Journal of Advanced Zoology, 44(S7), 180–190. https://doi.org/10.17762/jaz.v44iS7.2755
-
-Oregon Climate Change Research Institute. (2023). The Fifth Oregon Climate Assessment. Oregon State University, Corvallis, OR. https://www.climatechange.oregonstate.edu/oregon-climate-assessments
-
-Pereboom, J. J., & Biesmeijer, J. C. (2003). Thermal constraints for stingless bee foragers: The importance of body size and coloration. Oecologia, 137(1), 42–50. https://doi.org/10.1007/s00442-003-1333-6
-
-Potts, S. G., Imperatriz-Fonseca, V., Nguyen, H. T., Bartuska, A., Medellín, R. A., Baste, I. A., Oteng-Yeboah, A., Watson, R., et al. (Eds.). (2016). The assessment report of the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services on pollinators, pollination and food production. Secretariat of the Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services.
-
-Praz, C. J., Müller, A., & Dorn, S. (2018). Host-plant specialization in solitary bees: A case for polylecty evolution. Biological Reviews, 93(4), 1693–1716. https://doi.org/10.1111/brv.12414
-
-Russo, L. (2016). Positive and negative impacts of non-native bees on native ecosystems. Annual Review of Entomology, 61, 13–31. https://doi.org/10.1146/annurev-ento-010715-023719
-
-Thornton, P. K., Whitfield, S., & Challinor, A. J. (2023). Climate extremes and their implications for global food systems. Annual Review of Environment and Resources, 48, 203–229. https://doi.org/10.1146/annurev-environ-120120-021013
-
-Wilson, J. S., & Carril, O. M. (2015). The bees in your backyard: A guide to North America’s bees. Princeton University Press.
-
-Woods, H. A., Dillon, M. E., & Pincebourde, S. (2019). The roles of microclimatic diversity and of behavior in mediating the responses of ectotherms to climate change. Journal of Thermal Biology, 84, 80–92. https://doi.org/10.1016/j.jtherbio.2019.06.003
