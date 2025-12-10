@@ -2,11 +2,13 @@
 title: "FinalProject"
 author: "Ben Thompson & Cody Coppage"
 date: "`r Sys.Date()`"
-bibliography: "references.bib"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
+bibliography: references.bib
 ---
 
-```{r}
+```{r, results = "hide"}
 # Import Statements
 
 library(dplyr)
@@ -55,7 +57,7 @@ DEATHS_INDIRECT: Amount of indirect deaths recorded
 SOURCE: How that data was collected (public, department of highways, etc...)
 
 
-```{r}
+```{r, results = "hide"}
 # Importing Oregon Bee Atlas dataset
 
 OBA_dataset <- read.csv("OBA_2018-2024.csv")
@@ -63,7 +65,7 @@ OBA_dataset <- read.csv("OBA_2018-2024.csv")
 #OBA_dataset
 ```
 
-```{r}
+```{r, results = "hide"}
 # Importing Storm dataframe from Excel
 
 storm_dataset <- read.csv("storm_data.csv")
@@ -72,7 +74,7 @@ storm_dataset <- read.csv("storm_data.csv")
 ```
 
 # Data Wrangling/Exploration
-```{r}
+```{r, results = "hide"}
 # Create "GenusSpecies" Column
 
 OBA_dataset <- OBA_dataset %>%
@@ -115,7 +117,7 @@ storm_dataset_cols_to_drop <- c(
   )
 ```
 
-```{r}
+```{r, results = "hide"}
 # Dropping the useless columns from storm
 
 storm_dataset <- storm_dataset[, !(names(storm_dataset) %in% storm_dataset_cols_to_drop)]
@@ -123,7 +125,7 @@ storm_dataset <- storm_dataset[, !(names(storm_dataset) %in% storm_dataset_cols_
 #storm_dataset
 ```
 
-```{r}
+```{r, results = "hide", warning=FALSE}
 # Make sure the date columns are date objects 
 
 storm_dataset <- storm_dataset %>%
@@ -135,7 +137,7 @@ OBA_dataset <- OBA_dataset %>%
 #OBA_dataset
 ```
 
-```{r}
+```{r, results = "hide"}
 # Join Tables
 
 joined_data <- fuzzy_left_join(OBA_dataset, storm_dataset,
@@ -147,7 +149,7 @@ joined_data <- fuzzy_left_join(OBA_dataset, storm_dataset,
 #joined_data
 ```
 
-```{r}
+```{r, results = "hide"}
 # Count of each unique storm that occurred before a bee capture instance
 
 joined_data %>%
@@ -156,7 +158,7 @@ joined_data %>%
 ```
 
 
-```{r}
+```{r, results = "hide"}
 # Add Control column. True if control data, false if a storm instance
 joined_data <- joined_data %>%
   mutate(Control = is.na(EVENT_TYPE))
@@ -164,7 +166,7 @@ joined_data <- joined_data %>%
 ```
 
 
-```{r}
+```{r, results = "hide"}
 # Remove rows with no species data
 
 joined_data <- joined_data %>%
@@ -238,7 +240,7 @@ shannon_diversity_index_2
 ```
 
 
-```{r}
+```{r, results = "hide"}
 # Calculate Shannon Diversity for Control Group
 
 joined_data
@@ -273,7 +275,7 @@ shannon_diversity_index_control
 
 
 
-```{r}
+```{r, results = "hide"}
 # Calculate Shannon Diversity of Treatment Group
 joined_data
 not_control_table <- joined_data %>%
@@ -354,7 +356,7 @@ n_iterations <- 1000
 
 
 
-```{r}
+```{r, results = "hide"}
 # Perform AB Testing
 
 shuffle_results <- c()
@@ -418,7 +420,7 @@ As we can see, our observed statistic (Shannon diversity of storm bees) falls we
 
 Now, we want to do another AB test, but this time focused on frost/freeze impacts on bee diversity (ignoring extreme heat). Our null hypothesis this time will be: Freezing temperatures do not impact bee diversity according to the Shannon diversity index. 
 
-```{r}
+```{r, results = "hide"}
 # Create new table to analyze freezing temperatures
 
 joined_data_frost <- joined_data %>%
@@ -436,7 +438,7 @@ shannon_diversity(joined_data_frost_filtered_true, specificEpithet) - shannon_di
 ```
 
 
-```{r}
+```{r, results = "hide"}
 # Perform AB Test
 shuffled_frost_results <- c()
 for (i in 1:n_iterations) {
@@ -477,7 +479,7 @@ As we see here, the p value is once again 0. This means that we reject the null,
 
 ## Data Analysis - AB Test for Extreme Heat
 For our last AB test, we will focus on how extreme heat impacts bee diversity. Our null hypothesis: Extreme heat events do not impact the diversity of bees. 
-```{r}
+```{r, results = "hide"}
 # Create new table to analyze extreme heat
 
 joined_data_heat <- joined_data %>%
@@ -495,7 +497,7 @@ shannon_diversity(joined_data_heat_filtered_true, specificEpithet) - shannon_div
 
 ```
 
-```{r}
+```{r, results = "hide"}
 # Perform AB Test
 shuffled_heat_results <- c()
 for (i in 1:n_iterations) {
@@ -530,21 +532,6 @@ ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
 
 ```
 Once again, we reject the Null hypothesis. This suggests that extreme heat has a significant impact on bee diversity. If you compare the difference extreme heat and cold AB for Shannon diversities, heat appears to have a greater impact on diversity than extreme cold!
-
-```{r}
-# Code for a graph comparing heat / cold (see graph below)
-diversities <- data.frame(
-  Category = c("Storm"),
-  Frost = shannon_diversity(joined_data_frost_filtered, specificEpithet),
-  Heat = shannon_diversity(joined_data_heat_filtered, specificEpithet),
-  "No Storm" = shannon_diversity_index_control
-)
-
-diversities_long <- diversities %>%
-  pivot_longer(cols = -Category, names_to = "Type", values_to = "Value")
-
-
-```
 
 # Visualizations
 
@@ -640,7 +627,7 @@ ggplot(plot_data, aes(x = EVENT_TYPE, y = diversity, fill = period)) +
 
 ## Effect on community structure
 
-To compare community structure before and after extreme weather events bees were classified as specialists or generalists using genus-level traits derived from established ecological references (@Michener2000; @Wilson2015; @Danforth2019). Genera with strong evidence of specialization (e.g., Diadasia, Peponapis, Perdita, Chelostoma, Dufourea) were categorized as specialists based on associations documented by @Fowler2016 and @Praz2018 and genera (e.g., Bombus, Lasioglossum, Halictus) were categorized as generalists through documentations by @Wilson2015 and @Goulson2010. Bee identities were also cross-referenced with the USGS Native Bee Inventory dataset (@Fowler2020), which is a widely used North American bee monitoring program. Genera were only assigned to specialist or generalist categories when consistent agreement existed in the literature. Ambiguous genera were excluded from assignment to avoid confusion or bias in the data. We decided to use genera instead of species-specific traits due to time constraints, complexity, and significant disagreement in the literature. Once genera were categorized we created a new data table and used a for loop to subset the data for bee samples within 30 day windows before and after events, count the number of samples for each genera, and then find the overall proportions relative to specialists for ease of plotting. Once this was completed we summarized the data by event type and plotted the data in a bar chart. The bar chart shows that there is a  shift in community structure towards generalist genera which indicates that extreme weather events cause a noticeable difference in community structure with specialist genera not able to survive as well as generalist species after these events. 
+To compare community structure before and after extreme weather events bees were classified as specialists or generalists using genus-level traits derived from established ecological references (@Michener2000; @Wilson2015; @Danforth2019). Genera with strong evidence of specialization (e.g., Diadasia, Peponapis, Perdita, Chelostoma, Dufourea) were categorized as specialists based on associations documented by @Fowler2016 and @Praz2018 and genera (e.g., Bombus, Lasioglossum, Halictus) were categorized as generalists through documentations by @Wilson2015 and @Goulson2010. Bee identities were also cross-referenced with the USGS Native Bee Inventory dataset (@Fowler2016), which is a widely used North American bee monitoring program. Genera were only assigned to specialist or generalist categories when consistent agreement existed in the literature. Ambiguous genera were excluded from assignment to avoid confusion or bias in the data. We decided to use genera instead of species-specific traits due to time constraints, complexity, and significant disagreement in the literature. Once genera were categorized we created a new data table and used a for loop to subset the data for bee samples within 30 day windows before and after events, count the number of samples for each genera, and then find the overall proportions relative to specialists for ease of plotting. Once this was completed we summarized the data by event type and plotted the data in a bar chart. The bar chart shows that there is a  shift in community structure towards generalist genera which indicates that extreme weather events cause a noticeable difference in community structure with specialist genera not able to survive as well as generalist species after these events. 
 
 ```{r}
 # Create object vectors for Genera dependent on if they are specialists or generalists. Genera that have species that are both are excluded for clarity
