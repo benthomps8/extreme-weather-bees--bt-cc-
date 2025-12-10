@@ -532,6 +532,7 @@ ggplot(data.frame(x = shuffled_heat_results), aes(x)) +
 Once again, we reject the Null hypothesis. This suggests that extreme heat has a significant impact on bee diversity. If you compare the difference extreme heat and cold AB for Shannon diversities, heat appears to have a greater impact on diversity than extreme cold!
 
 ```{r}
+
 diversities <- data.frame(
   Category = c("Storm"),
   Frost = shannon_diversity(joined_data_frost_filtered, specificEpithet),
@@ -795,7 +796,7 @@ There is also limitations on the extent of this impact. When comparing before an
 
 Our analysis reveals evidence that extreme weather events can alter bee community structure in ways that reduce biodiversity and favor generalist taxa. Shannon diversity values declined in the 30 days following extreme temperature events, suggesting that these disturbances may disrupt foraging behavior and shift communities toward genera with broader dietary flexibility. This could indicate that specialists are becoming more stressed and susceptible to impacts.
 
-These results, however, should be looked at with caution. Although we concluded that, with P = 0 confidence, that bee communities are less diverse according to the Shannon diversity index after extreme temperature events, the strength of our conclusions is limited by both the resolution of the temperature data and uncertainties surrounding the hand-collected data. We can't be certain of any conclusions as floral availability, weather station proximity, and collector effort may also have influenced the recorded community structure. More analysis, with higher resolution temperature data and standardized sampling methods would be needed to draw future conclusions. Even so, this analysis highlights the importance of examining short-term climate extremes rather than focusing only on long-term warming trends.
+These results, however, should be looked at with caution. Although we concluded that, with P = 0 confidence, bee communities are less diverse according to the Shannon diversity index after extreme temperature events, the strength of our conclusions is limited by both the resolution of the temperature data and uncertainties surrounding the hand-collected data. We can't be certain of any conclusions as floral availability, weather station proximity, and collector effort may also have influenced the recorded community structure. More analysis, with higher resolution temperature data and standardized sampling methods would be needed to draw future conclusions. Even so, this analysis highlights the importance of examining short-term climate extremes rather than focusing only on long-term warming trends.
 
 Overall, our findings show that continued monitoring of bee communities after extreme weather events is important and needed. Detecting shifts in community structure may help identify at-risk species and support future restoration efforts and strategies aimed at strengthening bee community resilience.
 
